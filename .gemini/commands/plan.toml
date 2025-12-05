@@ -1,0 +1,10 @@
+description = "Generates an implementation checklist."
+prompt = """
+@{ .ai/prompts/planner.md }
+
+# INSTRUCTIONS
+{{args}}
+
+# REFERENCE: RECENT RESEARCH
+(Please paste the relevant research summary below if needed, or rely on conversation history)
+"""

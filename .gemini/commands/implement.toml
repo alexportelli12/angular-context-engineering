@@ -1,0 +1,10 @@
+description = "Generates code for a specific feature step."
+prompt = """
+@{ .ai/prompts/implementer.md }
+
+# TARGET CONTEXT
+!{ node scripts/ai/get-deep-dive.js {{args_first}} }
+
+# TASK
+{{args_all_but_first}}
+"""

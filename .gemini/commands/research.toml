@@ -1,0 +1,10 @@
+description = "Analyzes project structure and risks before coding."
+prompt = """
+@{ .ai/prompts/researcher.md }
+
+# LIVE CONTEXT (Skeleton)
+!{ node scripts/ai/get-skeleton.js }
+
+# USER REQUEST
+{{args}}
+"""
