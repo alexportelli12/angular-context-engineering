@@ -1,10 +1,13 @@
-description = "Generates code for a specific feature step."
+description = "Writes code to a specific file based on the plan."
 prompt = """
 @{ .ai/prompts/implementer.md }
 
-# TARGET CONTEXT
+# REFERENCE: CURRENT PLAN
+@{ .ai/plans/current-plan.md }
+
+# TARGET CONTEXT (Existing code if any)
 !{ node scripts/ai/get-deep-dive.js {{args_first}} }
 
 # TASK
-{{args_all_but_first}}
+{{args}}
 """

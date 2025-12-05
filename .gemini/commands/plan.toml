@@ -1,10 +1,10 @@
-description = "Generates an implementation checklist."
+description = "Generates a checklist and saves it to .ai/plans/current-plan.md"
 prompt = """
 @{ .ai/prompts/planner.md }
 
-# INSTRUCTIONS
-{{args}}
+# REFERENCE: RESEARCH SUMMARY
+@{ .ai/context/research_summary.md }
 
-# REFERENCE: RECENT RESEARCH
-(Please paste the relevant research summary below if needed, or rely on conversation history)
+# USER INSTRUCTION
+{{args}}
 """

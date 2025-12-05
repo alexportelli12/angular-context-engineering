@@ -1,8 +1,8 @@
-description = "Analyzes project structure and risks before coding."
+description = "Analyzes architecture and saves a summary to .ai/context/research_summary.md"
 prompt = """
 @{ .ai/prompts/researcher.md }
 
-# LIVE CONTEXT (Skeleton)
+# LIVE CONTEXT
 !{ node scripts/ai/get-skeleton.js }
 
 # USER REQUEST

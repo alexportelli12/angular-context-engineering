@@ -1,59 +1,130 @@
-# AngularContextEngineering
+# 🚀 Angular AI-Native Template (RPI Workflow)
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 21.0.1.
+**Stop generating "slop". Start engineering context.**
 
-## Development server
+This is a specialized Angular template configured for the **Research -\> Plan -\> Implement (RPI)** workflow. It comes pre-wired with a "Context Engine" that prevents AI hallucinations and ensures high-quality, architecturally sound code generation using `gemini-cli`.
 
-To start a local development server, run:
+## 🧠 The Philosophy
 
-```bash
-ng serve
-```
+Most developers use AI by "chatting" with it, leading to a cycle of bad code and endless corrections. This repository enforces a **Context Engineering** approach:
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+1.  **Research:** The AI acts as an Architect. It reads your project structure (without reading every file) to understand the "Ground Truth."
+2.  **Plan:** The AI acts as a Tech Lead. It generates a strict implementation checklist before a single line of code is written.
+3.  **Implement:** The AI acts as a Developer. It executes the plan atomically, ensuring high code quality.
 
-## Code scaffolding
+## ✨ Features
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+- **Modern Angular:** Configured for Standalone Components, Signals, and `OnPush` change detection.
+- **Tailwind CSS:** Pre-configured for rapid styling.
+- **Context Hygiene:** Strict `.geminiignore` rules to keep the AI focused.
+- **Custom AI Commands:** Built-in slash commands (`/research`, `/plan`, `/implement`) to automate the workflow.
 
-```bash
-ng generate component component-name
-```
+---
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+## 🛠️ Getting Started
 
-```bash
-ng generate --help
-```
+### 1\. Prerequisites
 
-## Building
+- **Node.js** (Latest LTS)
+- **Gemini CLI:** You must have the Gemini CLI installed and authenticated.
+  ```bash
+  npm install -g @google/gemini-cli
+  # OR follow official installation docs for your specific OS
+  ```
 
-To build the project run:
+### 2\. Installation
 
-```bash
-ng build
-```
-
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
-
-## Running unit tests
-
-To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use the following command:
+Use this template to start your new project:
 
 ```bash
-ng test
+# Clone the repository
+git clone https://github.com/your-username/angular-ai-template.git my-new-app
+
+# Install dependencies
+cd my-new-app
+npm install
+
+# Initialize the AI Context (Generates the map of your app)
+node scripts/ai/get-skeleton.js
 ```
 
-## Running end-to-end tests
+---
 
-For end-to-end (e2e) testing, run:
+## 🤖 The AI Workflow
+
+This repository uses **Custom Slash Commands**. You interact with the AI primarily through these commands to ensure it stays in the "Smart Zone."
+
+### Phase 1: Research 🧐
+
+_Before you build, understand._
+
+Use this command to ask high-level architectural questions. The AI will look at your routes, dependencies, and config **without** reading implementation details.
 
 ```bash
-ng e2e
+gemini /research "I want to add a dashboard with a sidebar navigation."
 ```
 
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
+> **Output:** A summary saved to `.ai/context/research_summary.md` detailing where the files should go and potential risks.
 
-## Additional Resources
+### Phase 2: Plan 📋
 
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+_Before you code, align._
+
+Convert the research into a checklist. This prevents the "I forgot to import the module" loop.
+
+```bash
+gemini /plan "Create the dashboard based on the research."
+```
+
+> **Output:** An implementation plan saved to `.ai/plans/current-plan.md`.
+>
+> **⚠️ CRITICAL:** Open this file\! Read it. If the plan is wrong, the code will be wrong.
+
+### Phase 3: Implement 🏗️
+
+_Execute with precision._
+
+Execute the plan one step at a time. This keeps the context window small and accuracy high.
+
+```bash
+gemini /implement src/app/features/dashboard/dashboard.component.ts "Step 1: Create the component structure"
+```
+
+> **Output:** The AI will write the actual code to the file using Angular best practices.
+
+### Phase 4: Review 🕵️
+
+_Trust but verify._
+
+```bash
+gemini /review:code src/app/features/dashboard/dashboard.component.ts
+```
+
+---
+
+## 📂 Project Structure
+
+```text
+/
+├── .gemini/
+│   └── commands/        # Custom Slash Commands definitions (.toml)
+├── .ai/
+│   ├── prompts/         # System Personas (Architect, Planner, Coder)
+│   ├── context/         # Generated Research Summaries
+│   └── plans/           # Generated Implementation Plans
+├── scripts/
+│   └── ai/              # Tools that generate context for the CLI
+├── src/                 # Your Angular Source Code
+└── CONTRIBUTING_AI.md   # Detailed guide on the RPI workflow
+```
+
+## 🧩 Customizing the Brain
+
+You can tweak the "Personas" to fit your team's style by editing the markdown files in `.ai/prompts/`.
+
+- **`researcher.md`**: Controls how strict the architecture analysis is.
+- **`implementer.md`**: Controls coding style (e.g., forcing specific linting rules).
+
+## 📄 License
+
+[MIT](https://www.google.com/search?q=LICENSE)
