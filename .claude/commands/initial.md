@@ -1,56 +1,46 @@
 ---
-description: bootstraps the INITIAL.md file from a natural language request
+description: bootstraps the INITIAL.md file from a request, handling mockups if provided
 usage: /initial [feature request]
 ---
 
 # Initial Spec Bootstrap Agent
 
-**Goal:** Transform a raw feature request into a structured `INITIAL.md` file by gathering necessary context and documentation _before_ the architecture phase begins.
-
-## 🛠 Capabilities
-
-- **File System**: Read `.ai/examples/` to find relevant internal patterns.
-- **Web Search**: Use `Google Search` to find official documentation for 3rd party libraries mentioned.
-- **Angular MCP**: Query for specific Angular version compatibility or best practices.
+**Goal:** Transform a raw feature request into a structured `INITIAL.md` file, handling context, documentation, and **visual assets**.
 
 ## Process
 
-### Step 1: Analyze & Research
+### Step 1: Design & Asset Management
 
-1.  **Parse Request**: detailed understanding of what the user wants to build.
-2.  **External Scan**:
-    - If the user mentions specific libraries (e.g., "Stripe", "Leaflet", "Ag-Grid"), perform a `Google Search` to find the **official Angular wrapper** or integration guide.
-    - **Goal**: Populate the `## DOCUMENTATION` section with valid URLs.
-3.  **Internal Scan**:
-    - Check `.ai/examples/` to see which patterns (Smart Page, Dumb UI, Form) apply to this feature.
-    - **Goal**: Populate the `## EXAMPLES` section with specific filenames (e.g., "Reference `smart-page.component.ts` for the data loading pattern").
+1.  **Check for Attachments**: Did the user upload an image/mockup?
+2.  **Determine ID**: Check `.ai/prps/` to find the last ID (e.g., if `001` exists, next is `002`).
+3.  **Save/Rename**:
+    - If an image exists, save it to `.ai/designs/[ID]-[feature-name].png`.
+    - _Example_: `.ai/designs/002-dashboard-mockup.png`.
 
-### Step 2: Populate Template
+### Step 2: Analyze & Research
 
-Construct the `INITIAL.md` content using this strict structure:
+1.  **External Scan**: Search for documentation if 3rd party libs are mentioned.
+2.  **Internal Scan**: Check `.ai/examples/` for relevant patterns.
+
+### Step 3: Populate Template
+
+Construct `INITIAL.md` (overwrite existing):
 
 1.  **## FEATURE**:
-    - A clear, professional summary of the feature.
-    - Key user goals.
+    - Summary of the feature.
+    - **Design Reference**: Explicitly state: "Follow mockup saved at `.ai/designs/[filename]`" (if applicable).
 
 2.  **## EXAMPLES**:
-    - List specific files from `.ai/examples/` that the Architect should mimic.
-    - Briefly explain _why_ (e.g., "Use `dumb-ui.component.ts` structure for the item list").
+    - List relevant files from `.ai/examples/`.
 
 3.  **## DOCUMENTATION**:
-    - List the URLs found during the research step.
-    - If using an MCP tool, mention which one (e.g., "Consult Angular MCP for `output()` signal syntax").
+    - List URLs found.
 
 4.  **## OTHER CONSIDERATIONS**:
-    - Add standard guardrails: "Strictly use Signals," "No inline templates," "Tailwind for styling."
-    - Add specific constraints discovered during research (e.g., "Library X requires importing styles in `angular.json`").
+    - "Strictly use Signals," "Tailwind," "No inline templates."
+    - "Update `index.ts` barrel files for all new creations."
 
-### Step 3: Write Output
+### Step 4: Output
 
-- Overwrite the `INITIAL.md` file in the root directory with the generated content.
-- Confirm completion to the user and suggest running `/generate-prp INITIAL.md`.
-
-## Example Interaction
-
-**User**: "/initial I want a dark mode toggle that saves to local storage."
-**Agent**: _Searches for 'Angular signal local storage pattern', finds internal example, generates INITIAL.md with links to best practices._
+- Save `INITIAL.md`.
+- Inform the user if a design was saved and linked.
