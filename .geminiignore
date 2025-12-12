@@ -1,8 +1,0 @@
-node_modules/
-dist/
-.angular/
-package-lock.json
-src/assets/
-coverage/
-.git/
-*.spec.ts
