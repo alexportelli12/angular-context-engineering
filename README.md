@@ -1,130 +1,97 @@
-# 🚀 Angular AI-Native Template (RPI Workflow)
+# Angular Context Engineering
 
-**Stop generating "slop". Start engineering context.**
+A high-performance Angular repository template designed specifically for **AI-Assisted Engineering**.
 
-This is a specialized Angular template configured for the **Research -\> Plan -\> Implement (RPI)** workflow. It comes pre-wired with a "Context Engine" that prevents AI hallucinations and ensures high-quality, architecturally sound code generation using `gemini-cli`.
+This repository implements **Context Engineering** principles—specifically the **PRP (Product Requirement Prompt)** method and **Context Sharding**—to allow AI agents (like Claude Code) to build high-quality, architectural-compliant features with minimal hallucinations.
 
-## 🧠 The Philosophy
+## 🚀 Tech Stack
 
-Most developers use AI by "chatting" with it, leading to a cycle of bad code and endless corrections. This repository enforces a **Context Engineering** approach:
+- **Framework**: Angular 21+ (Signals, Standalone, Control Flow)
+- **Styling**: TailwindCSS
+- **Architecture**: Smart (Page) vs. Dumb (UI) Components
+- **Tooling**: Claude Code (primary agent), Angular MCP
 
-1.  **Research:** The AI acts as an Architect. It reads your project structure (without reading every file) to understand the "Ground Truth."
-2.  **Plan:** The AI acts as a Tech Lead. It generates a strict implementation checklist before a single line of code is written.
-3.  **Implement:** The AI acts as a Developer. It executes the plan atomically, ensuring high code quality.
+## 🧠 Core Concepts
 
-## ✨ Features
+This is not a standard starter kit. It is a "Software Factory" designed for AI agents.
 
-- **Modern Angular:** Configured for Standalone Components, Signals, and `OnPush` change detection.
-- **Tailwind CSS:** Pre-configured for rapid styling.
-- **Context Hygiene:** Strict `.geminiignore` rules to keep the AI focused.
-- **Custom AI Commands:** Built-in slash commands (`/research`, `/plan`, `/implement`) to automate the workflow.
+1.  **PRP Method**: We never code directly from a rough idea. We use a **Research → Plan → Implement** lifecycle.
+2.  **Context Sharding**: To prevent AI "context overflow," architectural rules are placed in local `AGENTS.md` files (e.g., inside `src/app/pages/`). The agent only reads them when necessary.
+3.  **Strict Guardrails**: The AI is forbidden from using legacy patterns (Modules, `*ngIf`, Constructor DI).
 
----
-
-## 🛠️ Getting Started
-
-### 1\. Prerequisites
-
-- **Node.js** (Latest LTS)
-- **Gemini CLI:** You must have the Gemini CLI installed and authenticated.
-  ```bash
-  npm install -g @google/gemini-cli
-  # OR follow official installation docs for your specific OS
-  ```
-
-### 2\. Installation
-
-Use this template to start your new project:
-
-```bash
-# Clone the repository
-git clone https://github.com/your-username/angular-ai-template.git my-new-app
-
-# Install dependencies
-cd my-new-app
-npm install
-
-# Initialize the AI Context (Generates the map of your app)
-node scripts/ai/get-skeleton.js
-```
-
----
-
-## 🤖 The AI Workflow
-
-This repository uses **Custom Slash Commands**. You interact with the AI primarily through these commands to ensure it stays in the "Smart Zone."
-
-### Phase 1: Research 🧐
-
-_Before you build, understand._
-
-Use this command to ask high-level architectural questions. The AI will look at your routes, dependencies, and config **without** reading implementation details.
-
-```bash
-gemini /research "I want to add a dashboard with a sidebar navigation."
-```
-
-> **Output:** A summary saved to `.ai/context/research_summary.md` detailing where the files should go and potential risks.
-
-### Phase 2: Plan 📋
-
-_Before you code, align._
-
-Convert the research into a checklist. This prevents the "I forgot to import the module" loop.
-
-```bash
-gemini /plan "Create the dashboard based on the research."
-```
-
-> **Output:** An implementation plan saved to `.ai/plans/current-plan.md`.
->
-> **⚠️ CRITICAL:** Open this file\! Read it. If the plan is wrong, the code will be wrong.
-
-### Phase 3: Implement 🏗️
-
-_Execute with precision._
-
-Execute the plan one step at a time. This keeps the context window small and accuracy high.
-
-```bash
-gemini /implement src/app/features/dashboard/dashboard.component.ts "Step 1: Create the component structure"
-```
-
-> **Output:** The AI will write the actual code to the file using Angular best practices.
-
-### Phase 4: Review 🕵️
-
-_Trust but verify._
-
-```bash
-gemini /review:code src/app/features/dashboard/dashboard.component.ts
-```
-
----
-
-## 📂 Project Structure
+## 📂 Repository Structure
 
 ```text
-/
-├── .gemini/
-│   └── commands/        # Custom Slash Commands definitions (.toml)
-├── .ai/
-│   ├── prompts/         # System Personas (Architect, Planner, Coder)
-│   ├── context/         # Generated Research Summaries
-│   └── plans/           # Generated Implementation Plans
-├── scripts/
-│   └── ai/              # Tools that generate context for the CLI
-├── src/                 # Your Angular Source Code
-└── CONTRIBUTING_AI.md   # Detailed guide on the RPI workflow
+├── .ai/                       # The AI "Brain"
+│   ├── commands/              # Prompts for /generate-prp, /execute-prp
+│   ├── examples/              # "Gold Standard" code (Source of Truth)
+│   ├── memory/                # Context compaction & session summaries
+│   └── templates/             # prp_base.md blueprint
+├── .claude/
+│   └── commands/              # Custom Slash Commands definitions
+├── src/
+│   └── app/
+│       ├── pages/             # Smart Components (AGENTS.md rules applied)
+│       └── components/        # Dumb Components (AGENTS.md rules applied)
+├── AGENTS.md                  # Root Manifesto & Context Map
+├── CLAUDE.md                  # System Prompt
+├── INITIAL.md                 # Feature Request Entry Point
+└── README.md                  # This file
 ```
 
-## 🧩 Customizing the Brain
+## ⚡️ Development Workflow
 
-You can tweak the "Personas" to fit your team's style by editing the markdown files in `.ai/prompts/`.
+We use **Custom Slash Commands** to drive development. Do not ask the AI to "just write code." Follow this loop:
 
-- **`researcher.md`**: Controls how strict the architecture analysis is.
-- **`implementer.md`**: Controls coding style (e.g., forcing specific linting rules).
+### 1\. Bootstrap (`/initial`)
 
-## 📄 License
+Tell the agent what you want in natural language. It will research documentation, find internal examples, and populate the `INITIAL.md` file.
 
-[MIT](https://www.google.com/search?q=LICENSE)
+```bash
+> /initial "Create a User Dashboard with a data table and a search filter"
+```
+
+### 2\. Architect (`/generate-prp`)
+
+The agent reads `INITIAL.md`, checks the "Gold Standard" examples, and creates a formal **Product Requirement Prompt (PRP)** in `.ai/prps/`. This includes a validation plan and file structure.
+
+```bash
+> /generate-prp INITIAL.md
+```
+
+### 3\. Build (`/execute-prp`)
+
+The agent reads the generated PRP and implements it. It automatically adheres to the "Smart vs. Dumb" architecture by reading the local `AGENTS.md` files in the target directories.
+
+```bash
+> /execute-prp .ai/prps/001-user-dashboard.md
+```
+
+## 🏛 Architecture Rules
+
+### Smart Components (`src/app/pages/`)
+
+- **Role**: Route handlers, data fetching, logic orchestration.
+- **Allowed**: Service Injection (`inject()`), Signal Stores.
+- **Constraint**: Must use `templateUrl` (no inline).
+
+### Dumb Components (`src/app/components/`)
+
+- **Role**: Pure UI presentation.
+- **Allowed**: `input()` signals, `output()` functions.
+- **Forbidden**: Service Injection.
+- **Constraint**: `ChangeDetectionStrategy.OnPush` is mandatory.
+
+## 🛠 Setup & Requirements
+
+1.  **Install Claude Code**: Follow the official Anthropic documentation.
+2.  **Angular MCP**: Ensure you have the Angular Model Context Protocol server configured.
+3.  **Node/NPM**: standard Angular requirements.
+
+## 📚 References
+
+- **Context Engineering**: [Context Engineering 101 (Video)](https://www.youtube.com/watch?v=Mk87sFlUG28)
+- **Context Compaction**: [No Vibes Allowed (Video)](https://www.youtube.com/watch?v=rmvDxxNubIg)
+- **Angular MCP**: [Official Documentation](https://angular.dev/ai/mcp)
+
+---
