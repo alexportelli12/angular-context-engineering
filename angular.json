@@ -7,7 +7,7 @@
   },
   "newProjectRoot": "projects",
   "projects": {
-    "angular-context-engineering": {
+    "stv": {
       "projectType": "application",
       "schematics": {},
       "root": "",
@@ -60,10 +60,10 @@
           "builder": "@angular/build:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "angular-context-engineering:build:production"
+              "buildTarget": "stv:build:production"
             },
             "development": {
-              "buildTarget": "angular-context-engineering:build:development"
+              "buildTarget": "stv:build:development"
             }
           },
           "defaultConfiguration": "development"

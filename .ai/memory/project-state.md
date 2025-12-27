@@ -3,38 +3,34 @@
 Compact context of the current project state. Updated after each feature implementation to provide baseline context for AI agents.
 
 **Last Updated:** 2025-12-27
-**Update Trigger:** Template Introduction Page feature implementation
+**Update Trigger:** Project initialization with /project.init
 
 ---
 
 ## Application Overview
 
-**Name:** Angular Context Engineering
+**Name:** STV
 **Type:** Angular 21 SPA (Single Page Application)
-**Stage:** Fresh repository - scaffolding only
+**Stage:** Initialized - ready for feature development
 
 ---
 
 ## Implemented Features
 
-### Feature: Template Introduction Page
+### Feature: Home Page (Default)
 
-- **PRP:** `.ai/planning/prp/template-introduction-page.md`
+- **PRP:** N/A (initial setup)
 - **Status:** Complete
 - **Components:**
-  - `IntroductionComponent` (pages/introduction/)
-  - `CodeBlockComponent` (shared/ui/code-block/)
+  - `HomeComponent` (pages/home/)
 - **Services:** None
-- **Models:** None (using inline interfaces for workflow steps)
+- **Models:** None
 - **Routes:**
-  - `/` → IntroductionComponent (default route)
+  - `/` → HomeComponent (default route)
 - **Notes:**
-  - First feature implementation establishing patterns
-  - Demonstrates Angular 21 syntax (signals, @if/@for, inject())
-  - Uses Tailwind CSS 4 for styling
-  - Static content, no external API calls
-  - SSR-compatible
-  - Architect review passed with "reference-quality" rating
+  - Minimal placeholder home page
+  - Ready to be replaced with actual landing page
+  - Follows Angular 21 conventions
 
 ---
 
@@ -47,21 +43,16 @@ src/app/
 ├── models/                  # TypeScript interfaces and types
 │   └── index.ts
 ├── pages/                   # Feature page components (smart)
-│   ├── introduction/        # Introduction page (landing page)
-│   │   ├── introduction.ts
-│   │   ├── introduction.html
-│   │   ├── introduction.css
+│   ├── home/                # Home page (landing page)
+│   │   ├── home.ts
+│   │   ├── home.html
+│   │   ├── home.css
 │   │   └── index.ts
 │   └── index.ts
 ├── services/                # Global services and state management
 │   └── (empty)
 ├── shared/
 │   └── ui/                  # Reusable presentational components (dumb)
-│       ├── code-block/      # Code snippet display component
-│       │   ├── code-block.ts
-│       │   ├── code-block.html
-│       │   ├── code-block.css
-│       │   └── index.ts
 │       └── index.ts
 └── app.routes.ts            # Application routing
 ```
@@ -70,9 +61,9 @@ src/app/
 
 ## Active Routes
 
-| Path | Component             | Guard | Description                                                 |
-| ---- | --------------------- | ----- | ----------------------------------------------------------- |
-| `/`  | IntroductionComponent | -     | Landing page explaining PRP workflow and repository purpose |
+| Path | Component     | Guard | Description            |
+| ---- | ------------- | ----- | ---------------------- |
+| `/`  | HomeComponent | -     | Default landing page   |
 
 ---
 
@@ -112,17 +103,16 @@ Refer to `.ai/context/core/tech-stack.md` for full dependency list.
 
 ## Recent Changes
 
-| Date       | Change                                 | PRP Reference                                    |
-| ---------- | -------------------------------------- | ------------------------------------------------ |
-| 2025-12-27 | Implemented Template Introduction Page | `.ai/planning/prp/template-introduction-page.md` |
-| 2025-12-27 | Initial repository setup               | N/A                                              |
+| Date       | Change                                 | PRP Reference |
+| ---------- | -------------------------------------- | ------------- |
+| 2025-12-27 | Project initialized with /project.init | N/A           |
 
 ---
 
 ## Next Steps
 
-- Consider implementing additional features using the PRP workflow
-- Introduction page serves as reference implementation for Angular 21 patterns
+- Implement STV simulation features using the PRP workflow
+- Use /prp.draft, /prp.generate, and /prp.execute for feature development
 
 ---
 
