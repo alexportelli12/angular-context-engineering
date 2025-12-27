@@ -10,6 +10,7 @@ Create a visually modern welcome page that serves as the landing page for users 
 - **Visual hierarchy:** Desktop-optimized layout with modern UI/UX that emphasizes clarity and readability
 
 **Expected Behavior:**
+
 - Default route (`/`) displays this introduction page
 - Hero section explains the repository's purpose
 - Workflow diagram or visual representation of the PRP lifecycle
@@ -22,23 +23,27 @@ Create a visually modern welcome page that serves as the landing page for users 
 ## DOCUMENTATION:
 
 **Angular Resources:**
+
 - Angular Routing: https://angular.dev/guide/routing
 - Angular Signals: https://angular.dev/guide/signals
 - Angular Components: https://angular.dev/guide/components
 
 **Internal Context:**
+
 - `.ai/context/core/architecture.md` - directory structure for pages/
 - `.ai/context/core/coding-standards.md` - Angular 21 syntax requirements (@if/@for, inject(), input/output)
 - `.ai/context/core/tech-stack.md` - Tailwind CSS 4 usage
 - `CLAUDE.md` - PRP workflow documentation to reference in page content
 
 **External Resources:**
+
 - Tailwind CSS Typography: https://tailwindcss.com/docs/typography-plugin (if needed for prose content)
 - Heroicons or Lucide Icons: For visual elements in the guide
 
 ## OTHER CONSIDERATIONS:
 
 **Angular 21 Requirements:**
+
 - [x] Use `signal()` for state (not BehaviorSubject)
 - [x] Use `inject()` for DI (not constructor)
 - [x] Use `@if`/`@for` templates (not `*ngIf`/`*ngFor`)
@@ -50,12 +55,14 @@ Create a visually modern welcome page that serves as the landing page for users 
 - [x] Fix lint errors properly (NEVER disable ESLint rules)
 
 **Architecture Constraints:**
+
 - **Directory Placement:** `src/app/pages/introduction/` (routed page component)
 - **Route:** Configure as default route (`path: ''`) in `app.routes.ts`
 - **Component Type:** Smart component (page-level) with potential child presentational components
 - **State Management:** Local component state using signals for any interactive elements (e.g., collapsible sections)
 
 **Content Structure:**
+
 1. Hero section: Repository title, tagline, key value proposition
 2. What is this repository: Brief explanation of the template's purpose
 3. PRP Workflow section: Visual representation or step-by-step breakdown
@@ -66,6 +73,7 @@ Create a visually modern welcome page that serves as the landing page for users 
 5. Footer: Links to `.ai/context/` documentation files
 
 **Design Considerations:**
+
 - Modern, clean aesthetic (Tailwind's default design system)
 - Desktop-first responsive design (optimize for 1024px+ viewports)
 - Use Tailwind's spacing scale for consistent layout
@@ -74,21 +82,25 @@ Create a visually modern welcome page that serves as the landing page for users 
 - Code snippets: Use `<code>` and `<pre>` blocks styled with Tailwind (e.g., `bg-gray-100 rounded px-2 py-1`)
 
 **Edge Cases:**
+
 - Page should render correctly with or without JavaScript (SSR support)
 - External links should open in new tabs (`target="_blank" rel="noopener noreferrer"`)
 - Ensure accessibility (semantic HTML, ARIA labels if needed)
 
 **Potential Shared Components:**
+
 - Consider creating reusable components in `shared/ui/` if needed:
   - `CodeBlock` component for displaying command examples
   - `WorkflowStep` component for PRP workflow visualization
   - `CollapsibleSection` component for expandable guide sections
 
 **Testing Notes:**
+
 - Tests are NOT required unless explicitly requested
 - Visual verification after build is sufficient
 
 **Integration Points:**
+
 - No external API calls
 - No authentication required
 - Static content (can be signal-based for interactivity like toggling sections)
@@ -98,6 +110,7 @@ Create a visually modern welcome page that serves as the landing page for users 
 ## Next Step
 
 Once this draft is complete, run:
+
 ```
 /prp.generate template-introduction-page
 ```

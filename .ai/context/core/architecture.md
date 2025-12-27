@@ -41,8 +41,7 @@ export const authGuard = () => inject(AuthService).isAuthenticated();
 export const routes: Routes = [
   {
     path: 'dashboard',
-    loadComponent: () =>
-      import('./pages/dashboard').then((m) => m.DashboardComponent),
+    loadComponent: () => import('./pages/dashboard').then((m) => m.DashboardComponent),
   },
 ];
 ```
@@ -139,16 +138,16 @@ import { User } from './models';
 
 ## File Naming Conventions
 
-| Type        | Suffix            | Example                  |
-| ----------- | ----------------- | ------------------------ |
-| Component   | `.ts`             | `user-list.ts`           |
-| Service     | `.service.ts`     | `auth.service.ts`        |
-| Guard       | `.guard.ts`       | `auth.guard.ts`          |
-| Interceptor | `.interceptor.ts` | `error.interceptor.ts`   |
-| Model       | `.model.ts`       | `user.model.ts`          |
-| Enum        | `.enum.ts`        | `user-role.enum.ts`      |
-| Constants   | `.constants.ts`   | `api.constants.ts`       |
-| Utilities   | `.utils.ts`       | `date.utils.ts`          |
+| Type        | Suffix            | Example                |
+| ----------- | ----------------- | ---------------------- |
+| Component   | `.ts`             | `user-list.ts`         |
+| Service     | `.service.ts`     | `auth.service.ts`      |
+| Guard       | `.guard.ts`       | `auth.guard.ts`        |
+| Interceptor | `.interceptor.ts` | `error.interceptor.ts` |
+| Model       | `.model.ts`       | `user.model.ts`        |
+| Enum        | `.enum.ts`        | `user-role.enum.ts`    |
+| Constants   | `.constants.ts`   | `api.constants.ts`     |
+| Utilities   | `.utils.ts`       | `date.utils.ts`        |
 
 - Use **kebab-case**: `user-profile.ts`
 - Templates: **separate `.html` files** (never inline)
@@ -165,7 +164,7 @@ import { User } from './models';
   templateUrl: './dashboard.html',
   styleUrl: './dashboard.css',
   imports: [CommonModule, ButtonComponent],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DashboardComponent {}
 ```

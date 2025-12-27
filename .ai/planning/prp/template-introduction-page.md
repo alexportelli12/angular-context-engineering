@@ -9,6 +9,7 @@ Create a modern, visually appealing welcome page that serves as the landing page
 ## Goal
 
 Build a comprehensive introduction page at the root route (`/`) that explains:
+
 - The repository's purpose as an Angular 21 starter template optimized for Claude Code AI agents
 - The PRP (Product Requirement Prompt) workflow: Draft → Generate → Execute
 - Quick start guide with step-by-step instructions
@@ -24,6 +25,7 @@ Build a comprehensive introduction page at the root route (`/`) that explains:
 ## What
 
 Create a **static, page-level component** with:
+
 - Hero section explaining the repository's value proposition
 - PRP workflow visualization (Draft, Generate, Execute phases)
 - Interactive collapsible sections for the quick start guide
@@ -58,12 +60,14 @@ Create a **static, page-level component** with:
 **Read `.ai/memory/project-state.md` first:**
 
 Current state shows:
+
 - Fresh repository with scaffolding only
 - No features implemented yet
 - No active routes configured (default route is empty)
 - Directory structure in place: `pages/`, `shared/ui/`, `models/`, `services/`, `core/`
 
 This is the **first feature implementation** - it will establish patterns for:
+
 - Page component structure
 - Shared UI component creation
 - Routing configuration
@@ -316,7 +320,7 @@ import { CommonModule } from '@angular/common';
   imports: [CommonModule],
   templateUrl: './code-block.html',
   styleUrl: './code-block.css', // Optional, only if Tailwind insufficient
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CodeBlockComponent {
   code = input.required<string>();
@@ -327,9 +331,11 @@ export class CodeBlockComponent {
 ```html
 <!-- ===== shared/ui/code-block/code-block.html ===== -->
 <div class="relative">
-  <pre class="bg-gray-900 text-gray-100 rounded-lg p-4 overflow-x-auto"><code class="font-mono text-sm">{{ code() }}</code></pre>
+  <pre
+    class="bg-gray-900 text-gray-100 rounded-lg p-4 overflow-x-auto"
+  ><code class="font-mono text-sm">{{ code() }}</code></pre>
   @if (language() !== 'bash') {
-    <span class="absolute top-2 right-2 text-xs text-gray-400 uppercase">{{ language() }}</span>
+  <span class="absolute top-2 right-2 text-xs text-gray-400 uppercase">{{ language() }}</span>
   }
 </div>
 ```
@@ -354,7 +360,7 @@ interface WorkflowStep {
   imports: [CommonModule, CodeBlockComponent],
   templateUrl: './introduction.html',
   styleUrl: './introduction.css', // Optional
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class IntroductionComponent {
   // State for collapsible sections (if needed)
@@ -366,26 +372,29 @@ export class IntroductionComponent {
       id: 'draft',
       phase: 'Step 1',
       title: 'Draft',
-      description: 'Create initial feature draft with structured requirements and context references.',
+      description:
+        'Create initial feature draft with structured requirements and context references.',
       command: '/prp.draft user dashboard with profile info',
-      icon: '📝'
+      icon: '📝',
     },
     {
       id: 'generate',
       phase: 'Step 2',
       title: 'Generate',
-      description: 'AI researches codebase, analyzes patterns, and generates complete implementation PRP.',
+      description:
+        'AI researches codebase, analyzes patterns, and generates complete implementation PRP.',
       command: '/prp.generate user-dashboard',
-      icon: '🔍'
+      icon: '🔍',
     },
     {
       id: 'execute',
       phase: 'Step 3',
       title: 'Execute',
-      description: 'AI implements feature following PRP, validates build/lint, and updates project state.',
+      description:
+        'AI implements feature following PRP, validates build/lint, and updates project state.',
       command: '/prp.execute user-dashboard',
-      icon: '⚡'
-    }
+      icon: '⚡',
+    },
   ];
 
   // Quick Start Steps
@@ -393,26 +402,26 @@ export class IntroductionComponent {
     {
       step: 1,
       title: 'Fork and Clone',
-      description: 'Fork this repository and clone it to your local machine.'
+      description: 'Fork this repository and clone it to your local machine.',
     },
     {
       step: 2,
       title: 'Install Dependencies',
       description: 'Run npm install to set up your development environment.',
-      command: 'npm install'
+      command: 'npm install',
     },
     {
       step: 3,
       title: 'Start Dev Server',
       description: 'Launch the development server to verify setup.',
-      command: 'npm start'
+      command: 'npm start',
     },
     {
       step: 4,
       title: 'Draft Your First Feature',
       description: 'Use the PRP workflow to create your first feature.',
-      command: '/prp.draft your feature description here'
-    }
+      command: '/prp.draft your feature description here',
+    },
   ];
 
   toggleSection(sectionId: string): void {
@@ -436,32 +445,29 @@ export class IntroductionComponent {
 <div class="min-h-screen bg-gradient-to-b from-blue-50 to-white">
   <!-- Hero Section -->
   <section class="container mx-auto px-4 py-16 text-center">
-    <h1 class="text-5xl font-bold text-gray-900 mb-4">
-      Angular Context Engineering
-    </h1>
+    <h1 class="text-5xl font-bold text-gray-900 mb-4">Angular Context Engineering</h1>
     <p class="text-xl text-gray-600 mb-6">
       An Angular 21 starter template optimized for Claude Code AI agents
     </p>
     <p class="text-lg text-gray-700 max-w-3xl mx-auto">
-      Build features faster with the PRP (Product Requirement Prompt) workflow.
-      This template provides Claude Code with the context needed to produce
-      consistent, architecture-compliant code.
+      Build features faster with the PRP (Product Requirement Prompt) workflow. This template
+      provides Claude Code with the context needed to produce consistent, architecture-compliant
+      code.
     </p>
   </section>
 
   <!-- What is this repository -->
   <section class="container mx-auto px-4 py-12">
     <div class="max-w-4xl mx-auto bg-white rounded-lg shadow-md p-8">
-      <h2 class="text-3xl font-bold text-gray-900 mb-4">
-        What is this repository?
-      </h2>
+      <h2 class="text-3xl font-bold text-gray-900 mb-4">What is this repository?</h2>
       <p class="text-gray-700 mb-4">
-        This is not a standard Angular starter. It's a structured environment that gives
-        Claude Code AI the context needed to produce consistent, architecture-compliant code.
+        This is not a standard Angular starter. It's a structured environment that gives Claude Code
+        AI the context needed to produce consistent, architecture-compliant code.
       </p>
       <p class="text-gray-700 mb-4">
-        The key innovation is the <strong>PRP (Product Requirement Prompt)</strong> workflow,
-        which separates planning from implementation to reduce hallucinations and enforce coding standards.
+        The key innovation is the <strong>PRP (Product Requirement Prompt)</strong> workflow, which
+        separates planning from implementation to reduce hallucinations and enforce coding
+        standards.
       </p>
       <ul class="list-disc list-inside text-gray-700 space-y-2">
         <li>Angular 21 with Signals, Standalone Components, and Modern Control Flow</li>
@@ -475,18 +481,16 @@ export class IntroductionComponent {
 
   <!-- PRP Workflow -->
   <section class="container mx-auto px-4 py-12">
-    <h2 class="text-3xl font-bold text-gray-900 text-center mb-8">
-      The PRP Workflow
-    </h2>
+    <h2 class="text-3xl font-bold text-gray-900 text-center mb-8">The PRP Workflow</h2>
     <div class="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-6xl mx-auto">
       @for (step of workflowSteps; track step.id) {
-        <div class="bg-white rounded-lg shadow-md p-6 border-t-4 border-blue-500">
-          <div class="text-4xl mb-3">{{ step.icon }}</div>
-          <div class="text-sm text-gray-500 font-semibold mb-1">{{ step.phase }}</div>
-          <h3 class="text-xl font-bold text-gray-900 mb-3">{{ step.title }}</h3>
-          <p class="text-gray-700 mb-4">{{ step.description }}</p>
-          <app-code-block [code]="step.command" language="bash" />
-        </div>
+      <div class="bg-white rounded-lg shadow-md p-6 border-t-4 border-blue-500">
+        <div class="text-4xl mb-3">{{ step.icon }}</div>
+        <div class="text-sm text-gray-500 font-semibold mb-1">{{ step.phase }}</div>
+        <h3 class="text-xl font-bold text-gray-900 mb-3">{{ step.title }}</h3>
+        <p class="text-gray-700 mb-4">{{ step.description }}</p>
+        <app-code-block [code]="step.command" language="bash" />
+      </div>
       }
     </div>
   </section>
@@ -494,23 +498,23 @@ export class IntroductionComponent {
   <!-- Quick Start Guide -->
   <section class="container mx-auto px-4 py-12">
     <div class="max-w-4xl mx-auto bg-white rounded-lg shadow-md p-8">
-      <h2 class="text-3xl font-bold text-gray-900 mb-6">
-        Quick Start Guide
-      </h2>
+      <h2 class="text-3xl font-bold text-gray-900 mb-6">Quick Start Guide</h2>
       <div class="space-y-6">
         @for (item of quickStartSteps; track item.step) {
-          <div class="flex gap-4">
-            <div class="flex-shrink-0 w-8 h-8 bg-blue-500 text-white rounded-full flex items-center justify-center font-bold">
-              {{ item.step }}
-            </div>
-            <div class="flex-1">
-              <h3 class="text-lg font-semibold text-gray-900 mb-1">{{ item.title }}</h3>
-              <p class="text-gray-700 mb-2">{{ item.description }}</p>
-              @if (item.command) {
-                <app-code-block [code]="item.command" language="bash" />
-              }
-            </div>
+        <div class="flex gap-4">
+          <div
+            class="flex-shrink-0 w-8 h-8 bg-blue-500 text-white rounded-full flex items-center justify-center font-bold"
+          >
+            {{ item.step }}
           </div>
+          <div class="flex-1">
+            <h3 class="text-lg font-semibold text-gray-900 mb-1">{{ item.title }}</h3>
+            <p class="text-gray-700 mb-2">{{ item.description }}</p>
+            @if (item.command) {
+            <app-code-block [code]="item.command" language="bash" />
+            }
+          </div>
+        </div>
         }
       </div>
     </div>
@@ -540,9 +544,7 @@ export class IntroductionComponent {
           </a>
         </li>
         <li>
-          <a href="#" class="text-blue-600 hover:underline">
-            📖 Full Workflow (CLAUDE.md)
-          </a>
+          <a href="#" class="text-blue-600 hover:underline"> 📖 Full Workflow (CLAUDE.md) </a>
         </li>
       </ul>
     </div>
@@ -557,8 +559,7 @@ import { Routes } from '@angular/router';
 export const routes: Routes = [
   {
     path: '',
-    loadComponent: () =>
-      import('./pages/introduction').then((m) => m.IntroductionComponent),
+    loadComponent: () => import('./pages/introduction').then((m) => m.IntroductionComponent),
   },
 ];
 ```
@@ -597,21 +598,25 @@ COMPONENTS:
 ## Content Guidelines
 
 ### Hero Section
+
 - **Title:** "Angular Context Engineering"
 - **Tagline:** "An Angular 21 starter template optimized for Claude Code AI agents"
 - **Description:** Brief explanation of PRP workflow value proposition
 
 ### What is this repository
+
 - Explain it's not a standard Angular starter
 - Highlight the .ai/ directory context system
 - List key technologies (Angular 21, Signals, Tailwind CSS 4, etc.)
 
 ### PRP Workflow Section
+
 - Three cards: Draft, Generate, Execute
 - Each card shows: Phase number, title, description, command example
 - Visual hierarchy with icons/emojis
 
 ### Quick Start Guide
+
 - Numbered steps (1-4)
 - Step 1: Fork and Clone
 - Step 2: Install Dependencies (npm install)
@@ -619,6 +624,7 @@ COMPONENTS:
 - Step 4: Draft Your First Feature (/prp.draft)
 
 ### Footer
+
 - Links to .ai/context/core/ documentation files
 - Link to CLAUDE.md
 
@@ -696,11 +702,13 @@ npm run lint         # No ESLint errors (fix issues, NEVER disable rules)
 ## Edge Cases & Accessibility
 
 ### Edge Cases
+
 - Page should render correctly with or without JavaScript (SSR support)
 - External links (documentation links) should open in new tabs (`target="_blank" rel="noopener noreferrer"`)
 - Long code snippets should scroll horizontally (overflow-x-auto)
 
 ### Accessibility
+
 - Semantic HTML5 elements (section, article, header, footer)
 - Proper heading hierarchy (h1, h2, h3)
 - Alt text for any images (if added later)
@@ -715,6 +723,7 @@ After successful implementation, **MUST** update `.ai/memory/project-state.md` w
 
 ```markdown
 ### Feature: Template Introduction Page
+
 - **PRP:** `.ai/planning/prp/template-introduction-page.md`
 - **Status:** Complete
 - **Components:**
@@ -737,6 +746,7 @@ After successful implementation, **MUST** update `.ai/memory/project-state.md` w
 ## Confidence Rating: 9/10
 
 **Rationale:**
+
 - ✅ All context provided (project state, architecture, coding standards, tech stack)
 - ✅ Clear implementation steps with pseudocode
 - ✅ Executable validation commands
@@ -747,6 +757,7 @@ After successful implementation, **MUST** update `.ai/memory/project-state.md` w
 - ⚠️ Minor uncertainty: Content wording might need user preference (but solid structure provided)
 
 **Why not 10/10:**
+
 - Content text (taglines, descriptions) could vary based on user preference
 - Could ask user if they want more advanced features (syntax highlighting, animations)
 

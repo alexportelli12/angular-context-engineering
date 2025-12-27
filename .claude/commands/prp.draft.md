@@ -49,15 +49,18 @@ This provides baseline context for the draft.
 Fill in the template sections:
 
 **FEATURE:**
+
 - Transform the user's prompt into a clear, concise feature description
 - Include the core goal and expected behavior
 
 **DOCUMENTATION:**
+
 - List relevant Angular docs pages (https://angular.dev/)
 - Include any specific pattern documentation needed
 - Reference internal context files that apply
 
 **OTHER CONSIDERATIONS:**
+
 - Note Angular 21 specific gotchas relevant to this feature
 - Include common pitfalls for this type of feature
 - Add any constraints from existing architecture
@@ -117,9 +120,11 @@ After draft creation, inform the user:
 > Draft saved to `.ai/planning/drafts/{feature-name}.md`
 >
 > Review and edit the draft as needed, then run:
+>
 > ```
 > /prp.generate {feature-name}
 > ```
+>
 > to generate the full PRP specification.
 
 ---
@@ -127,6 +132,7 @@ After draft creation, inform the user:
 ## Example Usage
 
 **Input:**
+
 ```
 /prp.draft user authentication with login and signup forms
 ```

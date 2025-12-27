@@ -18,6 +18,7 @@ Compact context of the current project state. Updated after each feature impleme
 ## Implemented Features
 
 ### Feature: Template Introduction Page
+
 - **PRP:** `.ai/planning/prp/template-introduction-page.md`
 - **Status:** Complete
 - **Components:**
@@ -69,9 +70,9 @@ src/app/
 
 ## Active Routes
 
-| Path | Component | Guard | Description |
-|------|-----------|-------|-------------|
-| `/` | IntroductionComponent | - | Landing page explaining PRP workflow and repository purpose |
+| Path | Component             | Guard | Description                                                 |
+| ---- | --------------------- | ----- | ----------------------------------------------------------- |
+| `/`  | IntroductionComponent | -     | Landing page explaining PRP workflow and repository purpose |
 
 ---
 
@@ -111,10 +112,10 @@ Refer to `.ai/context/core/tech-stack.md` for full dependency list.
 
 ## Recent Changes
 
-| Date | Change | PRP Reference |
-|------|--------|---------------|
+| Date       | Change                                 | PRP Reference                                    |
+| ---------- | -------------------------------------- | ------------------------------------------------ |
 | 2025-12-27 | Implemented Template Introduction Page | `.ai/planning/prp/template-introduction-page.md` |
-| 2025-12-27 | Initial repository setup | N/A |
+| 2025-12-27 | Initial repository setup               | N/A                                              |
 
 ---
 

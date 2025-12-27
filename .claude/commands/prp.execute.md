@@ -210,6 +210,7 @@ BLOCKING: Implementation must be corrected before approval.
 
    ```markdown
    ### Feature: [Feature Name]
+
    - **PRP:** `.ai/planning/prp/[feature-name].md`
    - **Status:** Complete
    - **Components:** List of components created/modified

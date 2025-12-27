@@ -9,50 +9,47 @@ Mandatory coding standards for this project.
 ## 1. Modern Angular Syntax
 
 ### 1.1 Signals (State Management)
+
 **MUST** use Signals for synchronous state. Use RxJS ONLY for async operations (HTTP, WebSockets, time-based streams).
 
 ```typescript
 // ✅ Signals for state
 userList = signal<User[]>([]);
-selectedUser = computed(() => this.userList().find(u => u.id === this.selectedId()));
+selectedUser = computed(() => this.userList().find((u) => u.id === this.selectedId()));
 
 // ❌ Never BehaviorSubject for state
 userListSubject = new BehaviorSubject<User[]>([]);
 ```
 
 ### 1.2 Inputs/Outputs
+
 **MUST** use `input()`, `output()`, `model()` functions (not decorators).
 
 ```typescript
 userId = input.required<string>();
 isEditable = input<boolean>(false);
 userDeleted = output<string>();
-selectedValue = model<string>('');  // Two-way binding
+selectedValue = model<string>(''); // Two-way binding
 ```
 
 ### 1.3 Template Control Flow
+
 **MUST** use `@if`, `@for`, `@switch` (not `*ngIf`, `*ngFor`, `ngSwitch`).
 
 ```html
 @if (isLoading()) {
-  <app-spinner />
+<app-spinner />
 } @else if (hasError()) {
-  <app-error [message]="errorMessage()" />
-}
-
-@for (user of userList(); track user.id) {
-  <app-user-card [user]="user" />
+<app-error [message]="errorMessage()" />
+} @for (user of userList(); track user.id) {
+<app-user-card [user]="user" />
 } @empty {
-  <p>No users found.</p>
-}
-
-@switch (role()) {
-  @case ('admin') { <app-admin-panel /> }
-  @default { <app-viewer-panel /> }
-}
+<p>No users found.</p>
+} @switch (role()) { @case ('admin') { <app-admin-panel /> } @default { <app-viewer-panel /> } }
 ```
 
 ### 1.4 Dependency Injection
+
 **MUST** use `inject()` function (not constructor injection).
 
 ```typescript
@@ -65,6 +62,7 @@ private readonly router = inject(Router);
 ## 2. Code Quality
 
 ### 2.1 Naming Conventions
+
 **MUST** use descriptive, intention-revealing names. NO abbreviations.
 
 ```typescript
@@ -81,11 +79,13 @@ idx = signal<number>(-1);
 ```
 
 **Patterns:**
+
 - **Booleans:** `is`, `has`, `should`, `can` prefix (e.g., `isVisible`, `hasPermission`)
 - **Collections:** Plural with type (e.g., `userList`, `productCollection`)
 - **Computed:** Descriptive of result (e.g., `filteredUserList`, `totalPrice`)
 
 ### 2.2 Method Length
+
 **MUST** keep methods focused and **≤15-20 lines**. Extract logic into private methods.
 
 ```typescript
@@ -102,6 +102,7 @@ private validateForm(): boolean {
 ```
 
 ### 2.3 Template Logic
+
 **MUST** move complex logic to `computed()` signals. Keep templates declarative.
 
 ```typescript
@@ -127,6 +128,7 @@ displayName = computed(() => {
 ```
 
 ### 2.4 DRY Principle
+
 **MUST** extract repeated template code to sub-components.
 
 ```typescript
@@ -142,6 +144,7 @@ export class UserCardComponent {
 ## 3. File Organization
 
 ### 3.1 Separation of Concerns
+
 **MUST** separate interfaces, enums, and constants into dedicated files.
 
 ```
@@ -153,20 +156,31 @@ models/
 
 ```typescript
 // ❌ Never mix in one file
-export interface User { /* ... */ }
-export enum UserRole { /* ... */ }
+export interface User {
+  /* ... */
+}
+export enum UserRole {
+  /* ... */
+}
 export const DEFAULT_PAGE_SIZE = 20;
 
 // ✅ Separate files
 // user.model.ts
-export interface User { id: string; name: string; }
+export interface User {
+  id: string;
+  name: string;
+}
 // user-role.enum.ts
-export enum UserRole { Admin = 'admin', Editor = 'editor' }
+export enum UserRole {
+  Admin = 'admin',
+  Editor = 'editor',
+}
 // user.constants.ts
 export const DEFAULT_PAGE_SIZE = 20;
 ```
 
 ### 3.2 Template and Style Files
+
 **MUST** use separate `.html` and `.css` files (no inline templates or styles).
 
 ```typescript
@@ -183,6 +197,7 @@ styles: `...`
 ```
 
 **Styling Approach:**
+
 1. **First**: Use Tailwind CSS classes in templates
 2. **Only if needed**: Add custom CSS in `.css` files
 3. Use `@theme` in CSS files for Tailwind theme customization
@@ -205,6 +220,7 @@ const data: User = ...;
 ```
 
 **When `npm run lint` fails:**
+
 1. Read the error message carefully
 2. Fix the root cause (type safety, unused variables, etc.)
 3. Re-run lint to verify
