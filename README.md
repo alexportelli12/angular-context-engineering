@@ -296,3 +296,14 @@ Edit `.claude/agents/architect.md` to modify what the review checks for.
 - Context Engineering 101 - The Simple Strategy to 100x AI Coding: https://www.youtube.com/watch?v=Mk87sFlUG28
 - Are Agent Harnesses Bringing Back Vibe Coding?: https://www.youtube.com/watch?v=13HP_bSeNjU
 - No Vibes Allowed: Solving Hard Problems in Complex Codebases – Dex Horthy, HumanLayer: https://www.youtube.com/watch?v=rmvDxxNubIg&t=1s
+
+---
+
+## Author
+
+Created by **Alex Portelli**
+
+- 🌐 Website: [alexportelli.com](https://alexportelli.com)
+- 💼 LinkedIn: [linkedin.com/in/portellialex](https://www.linkedin.com/in/portellialex/)
+- ✍️ Medium: [@alexportelli12](https://medium.com/@alexportelli12)
+- 💻 GitHub: [alexportelli12](https://github.com/alexportelli12)
