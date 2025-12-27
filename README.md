@@ -17,10 +17,13 @@ This is not a standard Angular starter kit. It is a structured environment that 
 
 ## How the Workflow Works
 
-The development flow has two phases: **Generate** and **Execute**.
+The development flow has three phases: **Draft**, **Generate**, and **Execute**.
 
 ```
 [Your Feature Idea]
+        |
+        v
+  /prp.draft     -->  Creates initial draft from prompt
         |
         v
   /prp.generate  -->  Creates a detailed PRP file
@@ -35,9 +38,26 @@ The development flow has two phases: **Generate** and **Execute**.
   [Complete Feature]
 ```
 
-### Step 1: Generate a PRP
+### Step 1: Draft the Feature (Optional but Recommended)
 
-When you have a feature to build, run the `/prp.generate` command with a description:
+When you have a feature idea, start by creating a draft:
+
+```
+/prp.draft user dashboard with profile info and activity feed
+```
+
+The agent will:
+
+1. Parse your feature prompt
+2. Quick scan the project state and architecture
+3. Create a structured draft with the feature description, required documentation, and key considerations
+4. Save to `.ai/planning/drafts/user-dashboard.md`
+
+You can review and edit this draft before generating the full PRP.
+
+### Step 2: Generate a PRP
+
+Once you have a draft (or if you're confident in your requirements), run the `/prp.generate` command:
 
 ```
 /prp.generate user-dashboard
@@ -46,14 +66,15 @@ When you have a feature to build, run the `/prp.generate` command with a descrip
 The agent will:
 
 1. Read the project state from `.ai/memory/project-state.md`
-2. Analyze existing code patterns in `src/app/`
-3. Reference architectural rules in `.ai/context/core/`
-4. Ask clarifying questions if needed
-5. Output a complete PRP to `.ai/planning/prp/user-dashboard.md`
+2. Load the draft from `.ai/planning/drafts/` if it exists
+3. Analyze existing code patterns in `src/app/`
+4. Reference architectural rules in `.ai/context/core/`
+5. Ask clarifying questions if needed
+6. Output a complete PRP to `.ai/planning/prp/user-dashboard.md`
 
 The PRP contains everything needed to implement the feature: requirements, file structure, code patterns, integration points, and validation steps.
 
-### Step 2: Execute the PRP
+### Step 3: Execute the PRP
 
 Once you have a PRP, run the `/prp.execute` command:
 
@@ -75,7 +96,20 @@ The agent will:
 
 ## Slash Commands
 
-Two custom slash commands are defined in `.claude/commands/`:
+Three custom slash commands are defined in `.claude/commands/`:
+
+### /prp.draft
+
+**Purpose:** Create a structured draft from a feature prompt before full PRP generation.
+
+**What it does:**
+
+- Parses your feature description into a structured format
+- Quick scans the project state and architecture
+- Identifies relevant documentation and resources
+- Captures Angular 21 gotchas and considerations
+
+**Output:** `.ai/planning/drafts/{feature-name}.md`
 
 ### /prp.generate
 
@@ -142,9 +176,10 @@ The `.ai/` folder contains all context that Claude Code uses to understand your 
 │       └── tech-stack.md        # Framework versions and dependencies
 ├── memory/
 │   ├── project-state.md         # Current features, routes, services
-│   ├── decisions-log.md         # Architectural Decision Records (ADRs)
-│   └── progress.md              # Session progress tracking
+│   └── decisions-log.md         # Architectural Decision Records (ADRs)
 └── planning/
+    ├── drafts/
+    │   └── initial_template.md  # Template for feature drafts
     ├── templates/
     │   └── feature-prp.md       # Base template for PRPs
     └── prp/                     # Generated PRPs live here
@@ -160,6 +195,9 @@ Specifies Angular 21 syntax requirements. No @Input/@Output decorators (use inpu
 
 **`.ai/memory/project-state.md`**
 A living document that tracks what has been built. Lists implemented features, active routes, services, and models. Updated after each feature completion to provide context for future work.
+
+**`.ai/planning/drafts/initial_template.md`**
+The template used by `/prp.draft` to create initial feature drafts. Provides a structured format for capturing feature requirements, documentation references, and Angular 21 considerations before full PRP generation.
 
 **`.ai/planning/templates/feature-prp.md`**
 The template used by `/prp.generate` to create PRPs. Contains sections for requirements, file structure, pseudocode, integration points, and validation checklists.
@@ -196,6 +234,7 @@ Edit `.claude/agents/architect.md` to modify what the review checks for.
 │   ├── agents/
 │   │   └── architect.md         # Architect agent persona
 │   └── commands/
+│       ├── prp.draft.md         # Draft PRP from prompt
 │       ├── prp.generate.md      # Generate PRP command
 │       └── prp.execute.md       # Execute PRP command
 ├── src/app/
@@ -214,9 +253,11 @@ Edit `.claude/agents/architect.md` to modify what the review checks for.
 1. Fork this repository
 2. Install dependencies: `npm install`
 3. Open in Claude Code
-4. Describe your first feature and run `/prp.generate {feature-name}`
-5. Review the generated PRP
-6. Run `/prp.execute {feature-name}` to implement
+4. Describe your first feature: `/prp.draft your feature description here`
+5. Review and refine the draft in `.ai/planning/drafts/`
+6. Generate the full PRP: `/prp.generate {feature-name}`
+7. Review the generated PRP in `.ai/planning/prp/`
+8. Implement the feature: `/prp.execute {feature-name}`
 
 ---
 

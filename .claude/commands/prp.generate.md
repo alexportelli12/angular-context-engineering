@@ -12,9 +12,17 @@ Generate a complete PRP (Product Requirement Prompt) for a feature, bug fix, or 
 
 ## Research Process
 
-### 0. Load Project State (Baseline Context)
+### 0. Load Existing Draft (If Available)
 
-**First**, read `.ai/memory/project-state.md` to understand:
+**Check** if a draft exists at `.ai/planning/drafts/$ARGUMENTS.md`:
+
+- If found, use it as the starting point for the PRP
+- The draft contains the initial feature description, documentation references, and considerations
+- Validate and expand upon the draft content
+
+### 1. Load Project State (Baseline Context)
+
+**Next**, read `.ai/memory/project-state.md` to understand:
 
 - Currently implemented features and their components
 - Existing services and state management patterns
@@ -23,7 +31,7 @@ Generate a complete PRP (Product Requirement Prompt) for a feature, bug fix, or 
 
 This prevents duplication, ensures consistency with existing implementations, and identifies reusable components.
 
-### 1. Codebase Analysis
+### 2. Codebase Analysis
 
 Search for related Angular components, services, models, guards, and routing patterns:
 
@@ -48,7 +56,7 @@ Review architecture and standards:
 - `.ai/context/core/coding-standards.md` - Angular 21 patterns and anti-patterns
 - `.ai/context/core/tech-stack.md` - framework versions and tooling
 
-### 2. External Research
+### 3. External Research
 
 Reference documentation:
 
@@ -57,7 +65,7 @@ Reference documentation:
 - Tailwind 4 `@theme` syntax (NOT tailwind.config.js)
 - Vitest testing patterns
 
-### 3. User Clarification (if needed)
+### 4. User Clarification (if needed)
 
 Ask:
 
