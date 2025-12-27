@@ -20,6 +20,23 @@ npm test                 # Run Vitest tests
 npm run serve:ssr:angular-context-engineering  # Serve SSR build
 ```
 
+## First Time Setup
+
+**If this is your first time using this template**, initialize your project:
+
+```bash
+/project.init
+```
+
+This command will:
+- Remove placeholder content (IntroductionComponent, CodeBlockComponent)
+- Configure your project name in all files (package.json, angular.json, etc.)
+- Create a minimal HomeComponent as your starting point
+- Optionally set up additional technologies (Firebase, NgRx Signal Store, Storybook)
+- Update project documentation
+
+**Important:** Run this command ONLY ONCE when setting up a new project from this template.
+
 ## Project Philosophy
 
 This is **not** a standard Angular starter. It's a structured environment that gives Claude Code the context needed to produce consistent, architecture-compliant code. The key innovation is the **PRP (Product Requirement Prompt)** workflow, which separates planning from implementation to reduce hallucinations and enforce coding standards.

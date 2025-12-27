@@ -1,4 +1,4 @@
-# Angular Context Engineering
+# ACE (Angular Context Engineering)
 
 A starter template for Angular 21 projects optimized for AI-assisted development with Claude Code. Fork this repository to get a pre-configured environment with structured context, architectural guardrails, and a repeatable workflow for building features.
 
@@ -96,7 +96,24 @@ The agent will:
 
 ## Slash Commands
 
-Three custom slash commands are defined in `.claude/commands/`:
+Four custom slash commands are defined in `.claude/commands/`:
+
+### /project.init
+
+**Purpose:** Initialize a new project by removing placeholder content and configuring your project name.
+
+**What it does:**
+
+- Removes placeholder components (IntroductionComponent, CodeBlockComponent)
+- Prompts for project name and description
+- Updates all configuration files (package.json, angular.json, etc.)
+- Creates a minimal HomeComponent as a starting point
+- Optionally sets up additional technologies (Firebase, NgRx Signal Store, Storybook)
+- Updates project documentation
+
+**Important:** Run this command ONLY ONCE when setting up a new project from this template.
+
+**Usage:** `/project.init`
 
 ### /prp.draft
 
@@ -234,6 +251,7 @@ Edit `.claude/agents/architect.md` to modify what the review checks for.
 │   ├── agents/
 │   │   └── architect.md         # Architect agent persona
 │   └── commands/
+│       ├── project.init.md      # Initialize new project (run once)
 │       ├── prp.draft.md         # Draft PRP from prompt
 │       ├── prp.generate.md      # Generate PRP command
 │       └── prp.execute.md       # Execute PRP command
@@ -251,13 +269,17 @@ Edit `.claude/agents/architect.md` to modify what the review checks for.
 ## Getting Started
 
 1. Fork this repository
-2. Install dependencies: `npm install`
-3. Open in Claude Code
-4. Describe your first feature: `/prp.draft your feature description here`
-5. Review and refine the draft in `.ai/planning/drafts/`
-6. Generate the full PRP: `/prp.generate {feature-name}`
-7. Review the generated PRP in `.ai/planning/prp/`
-8. Implement the feature: `/prp.execute {feature-name}`
+2. Clone it to your local machine
+3. Install dependencies: `npm install`
+4. **Initialize your project (first time only):** `/project.init`
+   - This removes placeholder content and configures your project name
+   - Optionally sets up additional technologies (Firebase, NgRx Signal Store, Storybook)
+5. Open in Claude Code (if not already open)
+6. Describe your first feature: `/prp.draft your feature description here`
+7. Review and refine the draft in `.ai/planning/drafts/`
+8. Generate the full PRP: `/prp.generate {feature-name}`
+9. Review the generated PRP in `.ai/planning/prp/`
+10. Implement the feature: `/prp.execute {feature-name}`
 
 ---
 

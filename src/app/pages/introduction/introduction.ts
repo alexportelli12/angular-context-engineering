@@ -75,12 +75,19 @@ export class IntroductionComponent {
     },
     {
       step: 3,
+      title: 'Initialize Your Project (First Time Only)',
+      description:
+        'Remove placeholder content and configure your project name. This also allows you to set up optional technologies like Firebase, NgRx Signal Store, or Storybook.',
+      command: '/project.init',
+    },
+    {
+      step: 4,
       title: 'Start Dev Server',
       description: 'Launch the development server to verify setup.',
       command: 'npm start',
     },
     {
-      step: 4,
+      step: 5,
       title: 'Draft Your First Feature',
       description: 'Use the PRP workflow to create your first feature.',
       command: '/prp.draft your feature description here',
