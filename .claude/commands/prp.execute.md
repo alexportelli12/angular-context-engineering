@@ -41,13 +41,15 @@ Break PRP into subtasks using `TodoWrite` tool. Follow this order:
 ```yaml
 1. CREATE models (interfaces, enums, constants)
 2. CREATE/UPDATE services (API, state management)
-3. CREATE components (page or shared/ui)
-4. CREATE templates (.html files with @if/@for/@switch)
-5. UPDATE routing (app.routes.ts if needed)
-6. CREATE tests (Vitest specs)
+3. CREATE components (page or shared/ui) - NO .component. in filename
+4. CREATE templates (.html files with @if/@for/@switch, use Tailwind classes)
+5. CREATE styles (.css files ONLY if Tailwind is insufficient)
+6. UPDATE routing (app.routes.ts if needed)
 7. VALIDATE (build, lint, visual check)
 8. UPDATE project-state.md with implemented feature
 ```
+
+**Note:** Tests are NOT required unless explicitly requested by the user.
 
 For each subtask:
 
@@ -62,11 +64,12 @@ Follow subtasks methodically using Angular 21 conventions:
 **Component Pattern:**
 
 ```typescript
+// Filename: [name].ts (NO .component. in filename)
 @Component({
   selector: 'app-[name]',
   imports: [CommonModule, /* shared */],
-  templateUrl: './[name].component.html',
-  styleUrl: './[name].component.scss',
+  templateUrl: './[name].html',
+  styleUrl: './[name].css',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class [Name]Component {
@@ -78,16 +81,20 @@ export class [Name]Component {
 }
 ```
 
-**Template Pattern:**
+**Template Pattern (Use Tailwind classes):**
 
 ```html
 @if (isLoading()) {
 <app-spinner />
-} @else if (data(); as item) { @for (child of item.children; track child.id) {
-<app-child [data]="child" />
-} @empty {
-<p>No items found.</p>
-} } @else {
+} @else if (data(); as item) {
+<div class="container mx-auto px-4">
+  @for (child of item.children; track child.id) {
+  <app-child [data]="child" />
+  } @empty {
+  <p class="text-gray-500">No items found.</p>
+  }
+</div>
+} @else {
 <app-error />
 }
 ```
@@ -98,8 +105,12 @@ export class [Name]Component {
 - `inject()` for DI (NOT constructor)
 - `input()`/`output()` (NOT @Input/@Output decorators)
 - `@if`/`@for`/`@switch` (NOT *ngIf/*ngFor)
-- Separate `.html` files (NOT inline templates)
+- Separate `.html` and `.css` files (NOT inline)
+- Tailwind classes FIRST, custom CSS only when needed
+- Component filenames WITHOUT `.component.` (e.g., user-list.ts)
+- Fix lint errors, NEVER disable ESLint rules
 - Barrel exports (`index.ts`) for all directories
+- Tests NOT required unless explicitly requested
 
 ### 4. Validate
 
@@ -108,14 +119,19 @@ Run validation commands in order:
 ```bash
 npm run start       # Visual check at http://localhost:4200
 npm run build       # Production build must succeed
-npm run lint        # ESLint validation
+npm run lint        # ESLint validation (fix issues, NEVER disable rules)
 ```
+
+**CRITICAL:** When `npm run lint` fails, fix the underlying issue. Disabling ESLint rules is NOT acceptable.
 
 Re-run until all pass. Debug failures by:
 
 - Checking signals are used correctly (no BehaviorSubject)
 - Verifying inject() usage (no constructor DI)
 - Confirming template syntax (@if not \*ngIf)
+- Checking component filenames (NO .component. in name)
+- Verifying Tailwind classes used before custom CSS
+- Fixing lint errors properly (not disabling rules)
 - Testing with real data/edge cases
 
 ### 5. Architect Review
@@ -243,9 +259,12 @@ After successful implementation, update if needed:
 - Constructor DI → Use `inject()`
 - BehaviorSubject for state → Use `signal()`
 - NgModules → Use standalone components
-- Inline templates → Separate `.html` files
+- Inline templates/styles → Separate `.html` and `.css` files
+- Custom CSS before Tailwind → Use Tailwind classes first
+- `.component.` in filenames → Use simple names (user-list.ts)
+- Disabling ESLint rules → Fix the underlying issue
 - Missing barrel exports → Always add `index.ts`
-- Jasmine syntax → Use Vitest (`vi.mock`, `describe`, `it`)
+- `.scss` extensions → Use `.css` files
 - `tailwind.config.js` → Use `@theme` in CSS files
 
 ---

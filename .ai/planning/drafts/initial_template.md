@@ -38,6 +38,10 @@ Example: "Create a user profile page with editable form fields for name, email, 
 - [ ] Use `@if`/`@for` templates (not `*ngIf`/`*ngFor`)
 - [ ] Use `input()`/`output()` (not @Input/@Output decorators)
 - [ ] OnPush change detection
+- [ ] Component filenames without `.component.` (e.g., user-list.ts)
+- [ ] Use Tailwind classes for styling (custom CSS only when needed)
+- [ ] Style files as `.css` (not `.scss`)
+- [ ] Fix lint errors properly (NEVER disable ESLint rules)
 
 **Architecture Constraints:**
 - [Directory placement: pages/ vs shared/ui/]
@@ -50,8 +54,9 @@ Example: "Create a user profile page with editable form fields for name, email, 
 - [Empty states]
 
 **Testing Notes:**
-- [Key scenarios to test]
-- [Mock requirements]
+- Tests are NOT required unless explicitly requested
+- [If tests are needed: key scenarios to test]
+- [If tests are needed: mock requirements]
 
 ---
 

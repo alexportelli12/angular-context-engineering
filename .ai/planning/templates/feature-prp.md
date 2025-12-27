@@ -27,8 +27,10 @@ This template guides AI agents through implementing Angular features with full c
 - [ ] Templates use `@if`/`@for`/`@switch` (not `*ngIf`/`*ngFor`)
 - [ ] Components use `inject()`, `input()`, `output()` (not decorators)
 - [ ] OnPush change detection compatible (zoneless)
-- [ ] Unit tests pass with Vitest
+- [ ] Tailwind classes used for styling (custom CSS only when needed)
+- [ ] Component filenames without `.component.` (e.g., `user-list.ts`)
 - [ ] Build succeeds: `npm run build`
+- [ ] Lint passes: `npm run lint` (all issues fixed, not disabled)
 - [ ] Follows architecture in `.ai/context/core/`
 
 ---
@@ -78,9 +80,9 @@ src/app/
 ```
 src/app/
 ├── pages/[feature]/
-│   ├── [component].component.ts   # NEW/MODIFIED
-│   ├── [component].component.html
-│   ├── [component].component.scss
+│   ├── [component].ts             # NEW/MODIFIED (no .component. in filename)
+│   ├── [component].html
+│   ├── [component].css
 │   └── index.ts                   # Barrel export
 ├── services/
 │   └── [service].service.ts       # NEW/MODIFIED
@@ -107,17 +109,24 @@ userDeleted = output<string>();
 // GOTCHA: Templates use @if/@for, NOT *ngIf/*ngFor
 // @if (isLoading()) { <app-spinner /> }
 
-// GOTCHA: All components standalone: true
-@Component({ standalone: true, imports: [...] })
+// GOTCHA: Components are standalone by default (no need for standalone: true)
+@Component({ imports: [...] })
 
 // GOTCHA: OnPush change detection (zoneless compatible)
 changeDetection: ChangeDetectionStrategy.OnPush
 
-// GOTCHA: Separate .html files (no inline templates)
-templateUrl: './component.component.html'
+// GOTCHA: Separate .html and .css files (no inline templates/styles)
+templateUrl: './component.html'
+styleUrl: './component.css'
+
+// GOTCHA: Use Tailwind classes first, custom CSS only when needed
+
+// GOTCHA: Component filenames without .component. (e.g., user-list.ts)
+
+// GOTCHA: Fix lint errors, NEVER disable ESLint rules
 
 // GOTCHA: Barrel exports required (index.ts)
-// export * from './component.component';
+// export * from './component';
 ```
 
 ---
@@ -127,14 +136,19 @@ templateUrl: './component.component.html'
 ### Files to Create/Modify
 
 ```typescript
-// CREATE: pages/[feature]/[component].component.ts
+// CREATE: pages/[feature]/[component].ts (NO .component. in filename)
 // - Standalone component with OnPush
 // - Use signals for state
 // - inject() for dependencies
 
-// CREATE: pages/[feature]/[component].component.html
+// CREATE: pages/[feature]/[component].html
 // - Use @if/@for/@switch syntax
 // - Bind to signals with ()
+// - Use Tailwind classes for styling
+
+// CREATE: pages/[feature]/[component].css
+// - Custom CSS only when Tailwind is insufficient
+// - Use @theme for Tailwind customization
 
 // CREATE: services/[service].service.ts
 // - Injectable({ providedIn: 'root' })
@@ -165,7 +179,7 @@ Task 2:
     - Return Observable<T> for async operations
 
 Task 3:
-  action: CREATE pages/[feature]/[component].component.ts
+  action: CREATE pages/[feature]/[component].ts (NO .component. in filename)
   details:
     - Standalone component with OnPush
     - Define signals for state
@@ -173,36 +187,35 @@ Task 3:
     - Implement lifecycle methods if needed
 
 Task 4:
-  action: CREATE pages/[feature]/[component].component.html
+  action: CREATE pages/[feature]/[component].html
   details:
     - Use @if/@for/@switch control flow
     - Bind to signals: {{ user() }}
     - Handle outputs with events
+    - Use Tailwind classes for styling
 
 Task 5:
+  action: CREATE pages/[feature]/[component].css (if needed)
+  details:
+    - Only create if Tailwind is insufficient
+    - Use @theme for customization
+
+Task 6:
   action: UPDATE app.routes.ts
   details:
     - Add lazy-loaded route
     - Apply guards if needed
-
-Task 6:
-  action: CREATE [component].component.spec.ts
-  details:
-    - Use Vitest (describe, it, expect, vi)
-    - Test signal updates
-    - Mock services with vi.mock()
 ```
 
 ### Implementation Pseudocode
 
 ```typescript
-// Component Pattern
+// Component Pattern (filename: [name].ts, NO .component.)
 @Component({
   selector: 'app-[name]',
-  standalone: true,
   imports: [CommonModule, /* shared components */],
-  templateUrl: './[name].component.html',
-  styleUrl: './[name].component.scss',
+  templateUrl: './[name].html',
+  styleUrl: './[name].css',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class [Name]Component {
@@ -238,16 +251,16 @@ export class [Name]Component {
 ```
 
 ```html
-<!-- Template Pattern -->
+<!-- Template Pattern: Use Tailwind classes for styling -->
 @if (isLoading()) {
 <app-spinner />
 } @else if (data(); as item) {
-<div class="container">
-  <h1>{{ item.name }}</h1>
+<div class="container mx-auto px-4">
+  <h1 class="text-2xl font-bold mb-4">{{ item.name }}</h1>
   @for (child of item.children; track child.id) {
   <app-child-card [child]="child" />
   } @empty {
-  <p>No children found.</p>
+  <p class="text-gray-500">No children found.</p>
   }
 </div>
 } @else {
@@ -269,8 +282,9 @@ STATE:
   - RxJS Observables ONLY for async (HTTP, timers)
 
 STYLING:
-  - Tailwind 4 classes in templates
-  - Use @theme in .scss files (NOT tailwind.config.js)
+  - Tailwind 4 classes in templates (primary approach)
+  - Custom .css files only when Tailwind is insufficient
+  - Use @theme in .css files (NOT tailwind.config.js)
 ```
 
 ---
@@ -288,25 +302,27 @@ npm run start
 
 ```bash
 npm run build        # Production build must succeed
-npm run lint         # No ESLint errors
+npm run lint         # No ESLint errors (fix issues, NEVER disable rules)
 ```
+
+**CRITICAL:** When linting fails, fix the underlying issue. Disabling ESLint rules is NOT acceptable.
 
 ---
 
 ## Final Validation Checklist
 
-- [ ] Component uses standalone: true
 - [ ] State managed with signals (not BehaviorSubject)
 - [ ] DI uses inject() (not constructor)
 - [ ] Inputs/outputs use input()/output() functions
 - [ ] Templates use @if/@for/@switch
 - [ ] OnPush change detection set
 - [ ] Separate .html file (no inline templates)
+- [ ] Separate .css file (only if needed, Tailwind preferred)
+- [ ] Tailwind classes used for styling (custom CSS only when needed)
 - [ ] Barrel export in index.ts
-- [ ] File naming: kebab-case with suffix (.component.ts)
-- [ ] Tests use Vitest syntax
+- [ ] File naming: NO .component. in filenames (e.g., user-list.ts)
 - [ ] Build passes: `npm run build`
-- [ ] Lint passes: `npm run lint`
+- [ ] Lint passes: `npm run lint` (all issues fixed, NEVER disabled)
 - [ ] Follows `.ai/context/core/architecture.md`
 - [ ] Follows `.ai/context/core/coding-standards.md`
 - [ ] **`.ai/memory/project-state.md` updated with this feature**
@@ -321,8 +337,10 @@ npm run lint         # No ESLint errors
 - ❌ BehaviorSubject for state → Use `signal()`
 - ❌ NgModules → Use standalone components
 - ❌ Zone.js patterns → OnPush + signals (zoneless)
-- ❌ Inline templates → Separate .html files
+- ❌ Inline templates/styles → Separate .html and .css files
+- ❌ Custom CSS before Tailwind → Use Tailwind classes first
+- ❌ `.component.` in filenames → Use simple names (user-list.ts)
+- ❌ Disabling ESLint rules → Fix the underlying issue
 - ❌ Mixing models/enums/constants → Separate files
 - ❌ Missing barrel exports → Always add index.ts
-- ❌ Jasmine test syntax → Use Vitest (vi.mock, describe, it)
 - ❌ tailwind.config.js → Use @theme in CSS files

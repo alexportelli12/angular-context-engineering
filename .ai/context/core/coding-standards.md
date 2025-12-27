@@ -166,26 +166,53 @@ export enum UserRole { Admin = 'admin', Editor = 'editor' }
 export const DEFAULT_PAGE_SIZE = 20;
 ```
 
-### 3.2 Template Files
-**MUST** use separate `.html` files (no inline templates).
+### 3.2 Template and Style Files
+**MUST** use separate `.html` and `.css` files (no inline templates or styles).
 
 ```typescript
-// ✅ External template
+// ✅ External template and styles
 @Component({
   selector: 'app-user-list',
-  templateUrl: './user-list.component.html',
-  styleUrl: './user-list.component.scss'
+  templateUrl: './user-list.html',
+  styleUrl: './user-list.css'
 })
 
-// ❌ No inline templates
-template: `<div>...</div>`
+// ❌ No inline templates or styles
+template: `<div>...</div>`,
+styles: `...`
 ```
 
-**Exception:** Inline acceptable ONLY for <3 lines or single-element wrappers.
+**Styling Approach:**
+1. **First**: Use Tailwind CSS classes in templates
+2. **Only if needed**: Add custom CSS in `.css` files
+3. Use `@theme` in CSS files for Tailwind theme customization
+
+**Exception:** Inline template acceptable ONLY for <3 lines or single-element wrappers.
 
 ---
 
-## 4. Commit Checklist
+## 4. Linting and Code Quality
+
+**MUST** address linting failures by fixing the underlying issue. Disabling ESLint rules is NOT acceptable.
+
+```typescript
+// ❌ NEVER disable ESLint rules
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const data: any = ...;
+
+// ✅ Fix the issue properly
+const data: User = ...;
+```
+
+**When `npm run lint` fails:**
+1. Read the error message carefully
+2. Fix the root cause (type safety, unused variables, etc.)
+3. Re-run lint to verify
+4. Only disable rules in exceptional cases with team approval
+
+---
+
+## 5. Commit Checklist
 
 - [ ] State: `signal()` or `computed()` (not BehaviorSubject)
 - [ ] Inputs: `input()` or `input.required()`
@@ -195,4 +222,7 @@ template: `<div>...</div>`
 - [ ] Names: Descriptive (no abbreviations)
 - [ ] Methods: ≤20 lines, single responsibility
 - [ ] Templates: No complex logic (use `computed()`)
-- [ ] Files: Separate `.model.ts`, `.enum.ts`, `.constants.ts`, `.html`
+- [ ] Files: Separate `.model.ts`, `.enum.ts`, `.constants.ts`, `.html`, `.css`
+- [ ] Styles: Tailwind classes used first, custom CSS only when needed
+- [ ] Filenames: No `.component.` in component files (e.g., `user-list.ts`)
+- [ ] Linting: All issues fixed (not disabled)

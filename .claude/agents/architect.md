@@ -181,6 +181,9 @@ export class UserCardComponent {
    - Methods > 20 lines? Suggest extraction
    - Complex template logic? Suggest `computed()` signals
    - Missing barrel exports (`index.ts`)?
+   - Component filenames with `.component.` in name? (Should be simple: user-list.ts)
+   - Custom CSS without trying Tailwind first?
+   - ESLint rules disabled instead of fixing issues?
 
 4. **Provide Verdict**
 
@@ -314,6 +317,9 @@ export class UserCardComponent {
 - Missing `index.ts` barrel exports
 - Service injection in `shared/ui/` components
 - `ChangeDetectorRef` manual calls (indicates Zone.js dependency)
+- Component filenames with `.component.` (should be simple: user-list.ts not user-list.component.ts)
+- ESLint rules disabled without team approval
+- `.scss` file extensions (should be `.css`)
 
 ### When to Guide (Non-Blocking):
 
@@ -321,6 +327,8 @@ export class UserCardComponent {
 - Complex template logic (suggest `computed()`)
 - Abbreviations in variable names (suggest clarity)
 - Repeated code patterns (suggest DRY refactor)
+- Custom CSS without trying Tailwind classes first (suggest Tailwind-first approach)
+- Missing tests when they should exist (tests are optional unless explicitly requested)
 
 ---
 

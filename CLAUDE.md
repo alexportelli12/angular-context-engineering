@@ -201,11 +201,12 @@ constructor(private userService: UserService) {}
 
 ### Component Pattern
 ```typescript
+// Filename: user-list.ts (NO .component. in filename)
 @Component({
   selector: 'app-user-list',
   imports: [CommonModule, /* shared components */],
-  templateUrl: './user-list.component.html',
-  styleUrl: './user-list.component.scss',
+  templateUrl: './user-list.html',
+  styleUrl: './user-list.css',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class UserListComponent {
@@ -283,9 +284,14 @@ models/
 └── user.constants.ts      # Constants only
 ```
 
-**MUST** use separate `.html` files (no inline templates).
+**MUST** use separate `.html` and `.css` files (no inline templates or styles).
 
-**Exception:** Inline acceptable ONLY for <3 lines or single-element wrappers.
+**Styling Approach:**
+1. **First**: Use Tailwind CSS classes in templates
+2. **Only if needed**: Add custom CSS in `.css` files
+3. Use `@theme` in CSS files for Tailwind theme customization
+
+**Exception:** Inline template acceptable ONLY for <3 lines or single-element wrappers.
 
 ## The .ai/ Folder Context System
 
@@ -313,16 +319,19 @@ Template used by `/prp.generate` for creating PRPs. Contains sections for requir
 - Constructor DI → Use `inject()`
 - BehaviorSubject for state → Use `signal()`
 - NgModules → Use standalone components
-- Inline templates → Separate `.html` files
+- Inline templates/styles → Separate `.html` and `.css` files
+- Custom CSS before Tailwind → Use Tailwind classes first
+- `.component.` in filenames → Use simple names (user-list.ts not user-list.component.ts)
+- Disabling ESLint rules → Fix the underlying issue
 - Missing barrel exports → Always add `index.ts`
-- Jasmine syntax → Use Vitest (`vi.mock`, `describe`, `it`)
+- `.scss` extensions → Use `.css` files
 - `tailwind.config.js` → Use `@theme` in CSS files
 
 ## File Naming Conventions
 
 | Type        | Suffix            | Example                  |
 |-------------|-------------------|--------------------------|
-| Component   | `.component.ts`   | `user-list.component.ts` |
+| Component   | `.ts`             | `user-list.ts`           |
 | Service     | `.service.ts`     | `auth.service.ts`        |
 | Guard       | `.guard.ts`       | `auth.guard.ts`          |
 | Interceptor | `.interceptor.ts` | `error.interceptor.ts`   |
@@ -362,13 +371,15 @@ When implementing via `/prp.execute`:
 
 1. CREATE models (interfaces, enums, constants)
 2. CREATE/UPDATE services (API, state management)
-3. CREATE components (page or shared/ui)
-4. CREATE templates (.html files with @if/@for/@switch)
-5. UPDATE routing (app.routes.ts if needed)
-6. CREATE tests (Vitest specs)
+3. CREATE components (page or shared/ui) - NO .component. in filename
+4. CREATE templates (.html files with @if/@for/@switch, use Tailwind classes)
+5. CREATE styles (.css files ONLY if Tailwind is insufficient)
+6. UPDATE routing (app.routes.ts if needed)
 7. VALIDATE (build, lint, visual check)
 8. ARCHITECT REVIEW (`.claude/agents/architect.md`)
 9. UPDATE project-state.md (MANDATORY)
+
+**Note:** Tests are NOT required unless explicitly requested.
 
 ## Validation Checklist
 
@@ -382,8 +393,10 @@ Before considering a feature complete:
 - [ ] Names: Descriptive (no abbreviations)
 - [ ] Methods: ≤20 lines, single responsibility
 - [ ] Templates: No complex logic (use `computed()`)
-- [ ] Files: Separate `.model.ts`, `.enum.ts`, `.constants.ts`, `.html`
+- [ ] Files: Separate `.model.ts`, `.enum.ts`, `.constants.ts`, `.html`, `.css`
+- [ ] Styles: Tailwind classes used first, custom CSS only when needed
+- [ ] Filenames: No `.component.` in component files (e.g., `user-list.ts`)
 - [ ] Build: `npm run build` succeeds
-- [ ] Lint: `npm run lint` passes
+- [ ] Lint: `npm run lint` passes (all issues fixed, NEVER disabled)
 - [ ] Architect: Review passed
 - [ ] Documentation: `.ai/memory/project-state.md` updated

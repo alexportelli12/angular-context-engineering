@@ -32,7 +32,7 @@ export const authGuard = () => inject(AuthService).isAuthenticated();
 ### `pages/` - Feature Components
 
 - Lazy-loaded via routing
-- Standalone components with `.component.ts` suffix
+- Standalone components (no `.component.` in filename)
 - Organize by feature: `pages/dashboard/`, `pages/profile/`
 - Must have `index.ts` barrel export
 
@@ -42,7 +42,7 @@ export const routes: Routes = [
   {
     path: 'dashboard',
     loadComponent: () =>
-      import('./pages/dashboard/dashboard.component').then((m) => m.DashboardComponent),
+      import('./pages/dashboard').then((m) => m.DashboardComponent),
   },
 ];
 ```
@@ -141,7 +141,7 @@ import { User } from './models';
 
 | Type        | Suffix            | Example                  |
 | ----------- | ----------------- | ------------------------ |
-| Component   | `.component.ts`   | `user-list.component.ts` |
+| Component   | `.ts`             | `user-list.ts`           |
 | Service     | `.service.ts`     | `auth.service.ts`        |
 | Guard       | `.guard.ts`       | `auth.guard.ts`          |
 | Interceptor | `.interceptor.ts` | `error.interceptor.ts`   |
@@ -150,8 +150,9 @@ import { User } from './models';
 | Constants   | `.constants.ts`   | `api.constants.ts`       |
 | Utilities   | `.utils.ts`       | `date.utils.ts`          |
 
-- Use **kebab-case**: `user-profile.component.ts`
+- Use **kebab-case**: `user-profile.ts`
 - Templates: **separate `.html` files** (never inline)
+- Styles: **separate `.css` files** (use Tailwind classes first, custom CSS only when needed)
 - Barrel exports: always `index.ts`
 
 ## Core Patterns
@@ -164,6 +165,7 @@ import { User } from './models';
   templateUrl: './dashboard.html',
   styleUrl: './dashboard.css',
   imports: [CommonModule, ButtonComponent],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class DashboardComponent {}
 ```
