@@ -138,7 +138,11 @@ Re-run until all pass. Debug:
 
 ### 6. Update Project State
 
-**CRITICAL:** Update `project-state.md` after success.
+**CRITICAL:** Update `project-state.md` after success using documentation agent.
+
+**Use documentation agent (Task tool, subagent_type='documentation') to update `.ai/memory/project-state.md`**
+
+**Why:** Ensures token-efficient, dense format optimized for AI consumption and maintains consistency.
 
 **Required:**
 1. Update "Last Updated" + "Update Trigger" (date + feature)
@@ -163,11 +167,13 @@ Re-run until all pass. Debug:
 
 ### 7. Update Documentation
 
+Use documentation agent (Task tool, subagent_type='documentation') for all markdown updates.
+
 Update if needed:
 - README.md: New features, dependencies, setup
 - architecture.md: New routes, patterns
 - coding-standards.md: New conventions
-- Component `index.ts`: ALWAYS update when adding components/services/models
+- Component `index.ts`: ALWAYS update when adding components/services/models (use Edit tool for TypeScript)
 
 ### 8. Complete
 

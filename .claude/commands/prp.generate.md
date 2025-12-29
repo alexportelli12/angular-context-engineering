@@ -98,7 +98,9 @@ After research, PAUSE:
 
 ## Output
 
-Save to `.ai/planning/prp/{feature-name}.md` (kebab-case)
+Use documentation agent (Task tool, subagent_type='documentation') to create `.ai/planning/prp/{feature-name}.md` (kebab-case)
+
+**Why:** Ensures token-efficient, dense format optimized for AI consumption and maintains consistency.
 
 ## Quality Checklist
 

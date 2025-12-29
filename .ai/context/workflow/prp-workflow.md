@@ -14,6 +14,8 @@ Product Requirement Prompt workflow separates planning from implementation to re
 
 **Output:** `.ai/planning/drafts/[feature-name].md`
 
+**Process:** Uses documentation agent (Task tool, subagent_type='documentation') to create draft file
+
 **Contains:**
 - Feature description
 - Documentation references
@@ -44,9 +46,9 @@ Product Requirement Prompt workflow separates planning from implementation to re
 3. Search `src/app/` for similar patterns
 4. Reference `.ai/context/core/architecture.md` and `coding-standards.md`
 5. Ask clarifying questions if needed
-6. Generate complete PRP
+6. Generate complete PRP using documentation agent
 
-**Output:** `.ai/planning/prp/[feature-name].md`
+**Output:** `.ai/planning/prp/[feature-name].md` (created via documentation agent)
 
 **Contains:**
 - Goal, Why, What
@@ -85,7 +87,7 @@ Product Requirement Prompt workflow separates planning from implementation to re
 6. UPDATE routing (app.routes.ts if needed)
 7. VALIDATE (build, lint)
 8. ARCHITECT REVIEW (`.claude/agents/architect.md`)
-9. UPDATE project-state.md (MANDATORY)
+9. UPDATE project-state.md (MANDATORY - use documentation agent)
 
 ---
 
@@ -116,11 +118,16 @@ Before documentation, Architect Agent validates:
 
 ## Critical: Project State Update (Step 9)
 
-MUST update `.ai/memory/project-state.md` with:
+MUST use documentation agent (Task tool, subagent_type='documentation') to update `.ai/memory/project-state.md` with:
 - Feature details and PRP reference
 - Components/services/models created
 - Routes added
 - Implementation notes
+
+**Why documentation agent:**
+- Token-efficient, dense format optimized for AI consumption
+- Maintains consistency across all documentation
+- Ensures standardized structure for future PRP context
 
 Required for future PRP context.
 
@@ -162,3 +169,24 @@ Before feature complete:
 - Missing barrel exports → Always add index.ts
 - .scss extensions → Use .css
 - tailwind.config.js → Use @theme in CSS
+
+---
+
+## Documentation Agent Integration
+
+**When to use:** ALL markdown file creation/updates in PRP workflow
+
+**Tool:** Task tool with subagent_type='documentation'
+
+**Applies to:**
+- `.ai/planning/drafts/*.md` (Phase 1)
+- `.ai/planning/prp/*.md` (Phase 2)
+- `.ai/memory/project-state.md` (Phase 3, Step 9)
+- README.md, architecture.md, coding-standards.md (Phase 3, Step 7)
+
+**Benefits:**
+- Token-efficient, dense documentation format
+- Optimized for AI agent consumption
+- Maintains consistency across repository
+- Eliminates verbose/redundant content
+- Standardized structure for context files

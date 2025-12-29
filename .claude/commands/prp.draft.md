@@ -51,9 +51,15 @@ Ask about:
 - Integration: New or extending?
 - Priority: User-facing or infrastructure?
 
-### 6. Save
+### 6. Documentation Agent
 
-Save to `.ai/planning/drafts/{feature-name}.md` (kebab-case)
+Use documentation agent (Task tool, subagent_type='documentation') for all markdown operations.
+
+**Why:** Ensures token-efficient, dense format optimized for AI consumption and maintains consistency.
+
+### 7. Save
+
+Use documentation agent to create `.ai/planning/drafts/{feature-name}.md` (kebab-case)
 
 ## Output Format
 
