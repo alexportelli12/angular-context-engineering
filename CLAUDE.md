@@ -1,6 +1,6 @@
-# CLAUDE.md
+# Claude Code Project Guide
 
-This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
+Guidance for Claude Code when working in this Angular 21 repository.
 
 ## Essential Commands
 
@@ -54,19 +54,19 @@ This command will:
 - Identify inconsistencies between documentation and implementation
 
 **When to use:**
-- Adopting PRP workflow in an existing Angular project (run once initially)
-- After major refactoring or architectural changes
-- When context documentation feels stale or out of sync
-- Every 3-6 months as maintenance to prevent documentation drift
-- Onboarding Claude Code to a legacy codebase
+- Initial adoption in existing Angular project
+- Post major refactoring/architectural changes
+- Context documentation drift detected
+- Maintenance (every 3-6 months)
+- Legacy codebase onboarding
 
 ## Project Philosophy
 
-This is **not** a standard Angular starter. It's a structured environment that gives Claude Code the context needed to produce consistent, architecture-compliant code. The key innovation is the **PRP (Product Requirement Prompt)** workflow, which separates planning from implementation to reduce hallucinations and enforce coding standards.
+Structured environment providing Claude Code context for consistent, architecture-compliant code. Core innovation: **PRP (Product Requirement Prompt)** workflow separates planning from implementation, reducing hallucinations and enforcing standards.
 
 ## PRP Workflow (Critical)
 
-The development flow has three phases: **Draft**, **Generate**, and **Execute**.
+Three phases: **Draft** → **Generate** → **Execute**
 
 ### Step 1: Draft (Optional but Recommended)
 ```bash
@@ -84,54 +84,58 @@ Creates initial draft at `.ai/planning/drafts/{feature-name}.md` with:
 /prp.generate user-dashboard
 ```
 
-The agent will:
-1. Load project state from `.ai/memory/project-state.md`
-2. Load draft from `.ai/planning/drafts/` if it exists
-3. Analyze existing code patterns in `src/app/`
-4. Reference architecture rules in `.ai/context/core/`
-5. Ask clarifying questions if needed
-6. Output complete PRP to `.ai/planning/prp/{feature-name}.md`
-
-**Research Process:**
-- Loads `.ai/memory/project-state.md` (current features, routes, services)
-- Searches `src/app/` for similar patterns
-- Reviews `.ai/context/core/architecture.md` and `.ai/context/core/coding-standards.md`
-- May ask clarifying questions about MVP scope, UX requirements, integration points
+Process:
+1. Load `.ai/memory/project-state.md` (features, routes, services)
+2. Load `.ai/planning/drafts/{feature-name}.md` (if exists)
+3. Analyze `src/app/` for similar patterns
+4. Reference `.ai/context/core/` (architecture, coding standards)
+5. Ask clarifying questions (MVP scope, UX, integrations)
+6. Output PRP to `.ai/planning/prp/{feature-name}.md`
 
 ### Step 3: Execute PRP
 ```bash
 /prp.execute user-dashboard
 ```
 
-The agent will:
+Process:
 1. Load PRP and project state
-2. Break work into tracked subtasks (models → services → components → routing → tests)
+2. Break into subtasks (models → services → components → routing)
 3. Implement using Angular 21 conventions
-4. Run validation (build, lint)
-5. Invoke Architect Agent for review
-6. Update `.ai/memory/project-state.md`
+4. Validate (build, lint)
+5. Architect Agent review
+6. Update `.ai/memory/project-state.md` (mandatory)
 
-**Critical: Architect Review (Step 5)**
+**Architect Review (Step 5):**
 
-Before proceeding to documentation, the Architect Agent (`.claude/agents/architect.md`) validates implementation against:
+Validates against (`.claude/agents/architect.md`):
 - Module boundaries (no cross-feature imports)
-- State management (signals, not BehaviorSubject)
-- Zoneless compliance (OnPush change detection)
-- Smart/Dumb component separation
-- Template syntax (@if/@for, not *ngIf/*ngFor)
-- Barrel exports (index.ts in every directory)
+- State: signals (not BehaviorSubject)
+- Zoneless: OnPush change detection
+- Smart/Dumb separation
+- Template: @if/@for (not *ngIf/*ngFor)
+- Barrel exports (index.ts per directory)
 
-**Verdict:** PASS (proceed) or FAIL (fix violations and re-review)
+Verdict: PASS (proceed) | FAIL (fix, re-review)
 
-**Critical: Project State Update (Step 6)**
+**Project State Update (Step 6):**
 
-After successful implementation, MUST update `.ai/memory/project-state.md` with:
-- Feature details and PRP reference
+MUST update `.ai/memory/project-state.md`:
+- Feature details, PRP reference
 - Components/services/models created
 - Routes added
 - Implementation notes
 
-This is mandatory for future PRP context.
+Mandatory for future PRP context.
+
+**Documentation Agent:**
+
+For ALL markdown file operations (creating or updating), use the documentation agent:
+- Ensures token-efficient, dense documentation format
+- Maintains consistency across all documentation
+- Optimized for AI agent consumption
+- Use for: `.ai/` files, README updates, project documentation
+
+Launch with: Task tool, subagent_type='documentation'
 
 ## Architecture Overview
 
@@ -153,25 +157,25 @@ src/app/
 ### Layer Responsibilities
 
 **Pages (src/app/pages/):**
-- Smart components that handle routing and data fetching
-- Inject services using `inject()`, manage state with signals
-- Must use external template files
-- Lazy-loaded via routing
+- Smart components: routing, data fetching
+- Inject services (`inject()`), manage state (signals)
+- External template files mandatory
+- Lazy-loaded
 
 **Shared UI (src/app/shared/ui/):**
-- Dumb components for pure presentation
-- `input()` and `output()` only, no service injection
-- OnPush change detection required
+- Dumb components: pure presentation
+- `input()`/`output()` only, no service injection
+- OnPush change detection
 
 **Services (src/app/services/):**
-- Provided in root
-- Use signals for synchronous state
-- Use RxJS only for async operations (HTTP, WebSockets)
+- `providedIn: 'root'`
+- Signals for synchronous state
+- RxJS for async only (HTTP, WebSockets, timers)
 
 **Models (src/app/models/):**
-- TypeScript interfaces and types only
-- No implementation logic
-- Separate files: `.model.ts`, `.enum.ts`, `.constants.ts`
+- Interfaces and types only
+- No logic
+- Separate: `.model.ts`, `.enum.ts`, `.constants.ts`
 
 ### The Barrel Pattern
 **Every directory MUST have `index.ts` exporting its public API.**
@@ -293,10 +297,10 @@ idx = signal<number>(-1);
 - **Computed:** Descriptive of result (e.g., `filteredUserList`, `totalPrice`)
 
 ### Method Length
-**MUST** keep methods ≤15-20 lines. Extract logic into private methods.
+Methods ≤15-20 lines. Extract to private methods.
 
 ### Template Logic
-**MUST** move complex logic to `computed()` signals. Keep templates declarative.
+Move complex logic to `computed()`. Keep templates declarative.
 
 ```typescript
 // ✅ Component
@@ -315,42 +319,41 @@ canEditProfile = computed(() => {
 ```
 
 ### File Organization
-**MUST** separate interfaces, enums, and constants into dedicated files.
-
+Separate interfaces, enums, constants:
 ```
 models/
-├── user.model.ts          # Interfaces only
-├── user-role.enum.ts      # Enums only
-└── user.constants.ts      # Constants only
+├── user.model.ts          # Interfaces
+├── user-role.enum.ts      # Enums
+└── user.constants.ts      # Constants
 ```
 
-**MUST** use separate `.html` and `.css` files (no inline templates or styles).
+Separate `.html` and `.css` files (no inline).
 
-**Styling Approach:**
-1. **First**: Use Tailwind CSS classes in templates
-2. **Only if needed**: Add custom CSS in `.css` files
-3. Use `@theme` in CSS files for Tailwind theme customization
+**Styling priority:**
+1. Tailwind classes in templates (always first)
+2. Custom CSS in `.css` files (only if needed)
+3. `@theme` in CSS for Tailwind customization
 
-**Exception:** Inline template acceptable ONLY for <3 lines or single-element wrappers.
+Exception: Inline template OK for <3 lines or single-element wrappers.
 
 ## The .ai/ Folder Context System
 
 ### Key Files
 
 **`.ai/context/core/architecture.md`**
-Defines directory structure and layer responsibilities. Pages are smart components (inject services, manage state). Shared/ui components are dumb (input/output only). Every directory needs index.ts barrel export.
+Directory structure, layer responsibilities. Pages: smart (inject services, state). Shared/ui: dumb (input/output). Barrel exports mandatory.
 
 **`.ai/context/core/coding-standards.md`**
-Specifies Angular 21 syntax requirements. No @Input/@Output decorators. No *ngIf/*ngFor. No constructor injection. No BehaviorSubject for state.
+Angular 21 syntax. No decorators (@Input/@Output), no *ngIf/*ngFor, no constructor DI, no BehaviorSubject.
 
 **`.ai/memory/project-state.md`**
-Living document tracking implemented features, active routes, services, and models. **MUST** be updated after each feature completion.
+Living document: features, routes, services, models. Update after each feature (mandatory).
 
 **`.ai/planning/drafts/initial_template.md`**
-Template used by `/prp.draft` for initial feature drafts.
+Template for `/prp.draft`.
 
 **`.ai/planning/templates/feature-prp.md`**
-Template used by `/prp.generate` for creating PRPs. Contains sections for requirements, file structure, pseudocode, integration points, and validation.
+Template for `/prp.generate`. Sections: requirements, file structure, pseudocode, integration, validation.
 
 ## Anti-Patterns to Avoid
 
@@ -391,35 +394,32 @@ Use **kebab-case** for all filenames.
 - **TypeScript:** 5.9.2
 - **Build:** Angular Build (application builder with SSR support)
 
-## Customizing Context
+## Customization
 
-**To change architectural rules:**
-Edit `.ai/context/core/architecture.md`
+| Target | File |
+|--------|------|
+| Architectural rules | `.ai/context/core/architecture.md` |
+| Coding standards | `.ai/context/core/coding-standards.md` |
+| PRP template | `.ai/planning/templates/feature-prp.md` |
+| Architect review criteria | `.claude/agents/architect.md` |
 
-**To change coding standards:**
-Edit `.ai/context/core/coding-standards.md`
+## Execution Order
 
-**To change PRP template:**
-Edit `.ai/planning/templates/feature-prp.md`
+`/prp.execute` sequence:
 
-**To change Architect review criteria:**
-Edit `.claude/agents/architect.md`
+1. Models (interfaces, enums, constants)
+2. Services (API, state)
+3. Components (pages/ or shared/ui/) - NO `.component.` in filename
+4. Templates (.html: @if/@for/@switch, Tailwind classes)
+5. Styles (.css: only if Tailwind insufficient)
+6. Routing (app.routes.ts)
+7. Validation (build, lint)
+8. Architect review (`.claude/agents/architect.md`)
+9. Project state update (`.ai/memory/project-state.md`) - MANDATORY (use documentation agent)
 
-## Execution Order for Features
+Tests: NOT required unless explicitly requested.
 
-When implementing via `/prp.execute`:
-
-1. CREATE models (interfaces, enums, constants)
-2. CREATE/UPDATE services (API, state management)
-3. CREATE components (page or shared/ui) - NO .component. in filename
-4. CREATE templates (.html files with @if/@for/@switch, use Tailwind classes)
-5. CREATE styles (.css files ONLY if Tailwind is insufficient)
-6. UPDATE routing (app.routes.ts if needed)
-7. VALIDATE (build, lint, visual check)
-8. ARCHITECT REVIEW (`.claude/agents/architect.md`)
-9. UPDATE project-state.md (MANDATORY)
-
-**Note:** Tests are NOT required unless explicitly requested.
+**Note:** Use the documentation agent (Task tool, subagent_type='documentation') for all markdown file updates to ensure consistency and efficiency.
 
 ## Validation Checklist
 
