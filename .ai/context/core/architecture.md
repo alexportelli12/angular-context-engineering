@@ -1,16 +1,16 @@
-# Application Architecture
+# Architecture
 
 ## Directory Structure
 
 ```
 src/app/
-├── core/           # Singletons: guards, interceptors, error handlers
-├── pages/          # Routed feature components (lazy-loaded)
-├── shared/         # Reusable code across features
-│   ├── ui/         # Presentational components
+├── core/           # Guards, interceptors, error handlers (singletons)
+├── pages/          # Smart components (routed, inject services)
+├── shared/
+│   ├── ui/         # Dumb components (input/output only)
 │   └── utils/      # Pure functions, validators, helpers
-├── models/         # TypeScript interfaces, types, enums, constants
-├── services/       # Global services (API, state, business logic)
+├── models/         # TypeScript interfaces, enums, constants
+├── services/       # Global services (API, state management)
 ├── app.ts
 ├── app.routes.ts
 └── app.config.ts
@@ -18,67 +18,66 @@ src/app/
 
 ## Layer Responsibilities
 
-### `core/` - Guards, Interceptors, App-Level Services
+### core/ - Application Infrastructure
 
-- Provided in `root`, imported once in `app.config.ts`
-- No UI components
-- Must have `index.ts` barrel export
+- Guards, interceptors, error handlers
+- Provided in root, configured in app.config.ts
+- NO UI components
+- MUST have index.ts barrel export
 
 ```typescript
-// core/guards/auth.guard.ts
+// auth.guard.ts
 export const authGuard = () => inject(AuthService).isAuthenticated();
 ```
 
-### `pages/` - Feature Components
+### pages/ - Smart Components
 
 - Lazy-loaded via routing
-- Standalone components (no `.component.` in filename)
-- Organize by feature: `pages/dashboard/`, `pages/profile/`
-- Must have `index.ts` barrel export
+- Inject services using inject()
+- Manage state with signals
+- External templates required
+- NO .component. in filename (user-list.ts not user-list.component.ts)
+- MUST have index.ts barrel export
 
 ```typescript
 // app.routes.ts
-export const routes: Routes = [
-  {
-    path: 'dashboard',
-    loadComponent: () => import('./pages/dashboard').then((m) => m.DashboardComponent),
-  },
-];
+{
+  path: 'dashboard',
+  loadComponent: () => import('./pages/dashboard').then(m => m.DashboardComponent),
+}
 ```
 
-### `shared/ui/` - Presentational Components
+### shared/ui/ - Dumb Components
 
-- Pure components with `input()`/`output()` communication
-- No direct service dependencies
-- Standalone with `index.ts` barrel export
+- input()/output() ONLY, NO service injection
+- OnPush change detection required
+- External templates required
+- MUST have index.ts barrel export
 
 ```typescript
-@Component({ selector: 'app-button' /* ... */ })
+@Component({ selector: 'app-button' })
 export class ButtonComponent {
   variant = input<'primary' | 'secondary'>('primary');
   clicked = output<void>();
 }
 ```
 
-### `shared/utils/` - Pure Functions
+### shared/utils/ - Pure Functions
 
-- No side effects, fully typed
-- Validators, formatters, type guards, custom operators
+- NO side effects, fully typed
+- Validators, formatters, type guards
 
 ```typescript
-export function formatDate(date: Date): string {
-  /* ... */
-}
-export function emailValidator(): ValidatorFn {
-  /* ... */
-}
+export function formatDate(date: Date): string { /* ... */ }
+export function emailValidator(): ValidatorFn { /* ... */ }
 ```
 
-### `models/` - Type Definitions
+### models/ - Type Definitions
 
-- Interfaces (`.model.ts`), Enums (`.enum.ts`), Constants (`.constants.ts`)
-- No implementation logic
-- Must have `index.ts` barrel export
+- Interfaces (.model.ts), Enums (.enum.ts), Constants (.constants.ts)
+- NO implementation logic
+- Separate files for each type
+- MUST have index.ts barrel export
 
 ```typescript
 // user.model.ts
@@ -87,77 +86,56 @@ export interface User {
   email: string;
   role: UserRole;
 }
-// user-role.enum.ts
-export enum UserRole {
-  Admin = 'ADMIN',
-  User = 'USER',
-}
 ```
 
-### `services/` - Global Services
+### services/ - Global Services
 
-- `@Injectable({ providedIn: 'root' })`
-- Use `.service.ts` suffix
-- Must have `index.ts` barrel export
+- @Injectable({ providedIn: 'root' })
+- Use .service.ts suffix
+- Return Observable for async, signal for sync state
+- MUST have index.ts barrel export
 
 ```typescript
 @Injectable({ providedIn: 'root' })
 export class UserService {
   private readonly http = inject(HttpClient);
-  getUser(id: string): Observable<User> {
-    /* ... */
-  }
+  getUser(id: string): Observable<User> { /* ... */ }
 }
 ```
 
-## The Barrel Pattern
+## Barrel Pattern (Required)
 
-**Every directory MUST have `index.ts` exporting its public API.**
-
-Benefits: Clean imports, easier refactoring, clear API boundaries.
+**Every directory MUST have index.ts exporting public API.**
 
 ```typescript
 // ❌ WRONG
 import { User } from './models/user.model';
+
 // ✅ CORRECT
 import { User } from './models';
 ```
 
-**Optional Path Mapping** (`tsconfig.json`):
-
-```json
-{
-  "compilerOptions": {
-    "paths": {
-      "@models": ["src/app/models"],
-      "@services": ["src/app/services"]
-    }
-  }
-}
-```
-
-## File Naming Conventions
+## File Naming
 
 | Type        | Suffix            | Example                |
-| ----------- | ----------------- | ---------------------- |
-| Component   | `.ts`             | `user-list.ts`         |
-| Service     | `.service.ts`     | `auth.service.ts`      |
-| Guard       | `.guard.ts`       | `auth.guard.ts`        |
-| Interceptor | `.interceptor.ts` | `error.interceptor.ts` |
-| Model       | `.model.ts`       | `user.model.ts`        |
-| Enum        | `.enum.ts`        | `user-role.enum.ts`    |
-| Constants   | `.constants.ts`   | `api.constants.ts`     |
-| Utilities   | `.utils.ts`       | `date.utils.ts`        |
+|-------------|-------------------|------------------------|
+| Component   | .ts               | user-list.ts           |
+| Service     | .service.ts       | auth.service.ts        |
+| Guard       | .guard.ts         | auth.guard.ts          |
+| Interceptor | .interceptor.ts   | error.interceptor.ts   |
+| Model       | .model.ts         | user.model.ts          |
+| Enum        | .enum.ts          | user-role.enum.ts      |
+| Constants   | .constants.ts     | api.constants.ts       |
+| Utilities   | .utils.ts         | date.utils.ts          |
 
-- Use **kebab-case**: `user-profile.ts`
-- Templates: **separate `.html` files** (never inline)
-- Styles: **separate `.css` files** (use Tailwind classes first, custom CSS only when needed)
-- Barrel exports: always `index.ts`
+- Kebab-case: user-profile.ts
+- NO .component. in component filenames
+- Templates: separate .html (never inline)
+- Styles: separate .css (Tailwind first, custom CSS only when needed)
 
 ## Core Patterns
 
-**Standalone Components** (no NgModules):
-
+**Component:**
 ```typescript
 @Component({
   selector: 'app-dashboard',
@@ -166,31 +144,21 @@ import { User } from './models';
   imports: [CommonModule, ButtonComponent],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class DashboardComponent {}
-```
-
-**Dependency Injection** (use `inject()`):
-
-```typescript
-export class UserComponent {
-  private readonly userService = inject(UserService);
+export class DashboardComponent {
+  private readonly service = inject(UserService);
 }
 ```
 
-**Routing** (lazy-loaded):
-
+**Routing (lazy-loaded):**
 ```typescript
-export const routes: Routes = [
-  {
-    path: 'dashboard',
-    loadComponent: () => import('./pages/dashboard').then((m) => m.DashboardComponent),
-    canActivate: [authGuard],
-  },
-];
+{
+  path: 'dashboard',
+  loadComponent: () => import('./pages/dashboard').then(m => m.DashboardComponent),
+  canActivate: [authGuard],
+}
 ```
 
-**State** (use Signals):
-
+**State (signals):**
 ```typescript
 @Injectable({ providedIn: 'root' })
 export class UserStateService {

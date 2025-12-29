@@ -96,7 +96,7 @@ The agent will:
 
 ## Slash Commands
 
-Four custom slash commands are defined in `.claude/commands/`:
+Five custom slash commands are defined in `.claude/commands/`:
 
 ### /project.init
 
@@ -114,6 +114,27 @@ Four custom slash commands are defined in `.claude/commands/`:
 **Important:** Run this command ONLY ONCE when setting up a new project from this template.
 
 **Usage:** `/project.init`
+
+### /project.align
+
+**Purpose:** Analyze the existing codebase and align context documentation to match actual implementation.
+
+**What it does:**
+
+- Analyzes the Angular project structure and patterns
+- Discovers tech stack, architecture, and coding standards from actual code
+- Generates or updates `.ai/context/` files to reflect reality
+- Updates `.ai/memory/project-state.md` with all features, routes, and services
+- Creates alignment report with recommendations
+- Identifies pattern inconsistencies and documentation drift
+
+**Use Cases:**
+- Adopting PRP workflow in an existing Angular project
+- Context drift after multiple changes or refactoring
+- Onboarding Claude Code to a legacy codebase
+- Periodic maintenance (every 3-6 months)
+
+**Usage:** `/project.align`
 
 ### /prp.draft
 

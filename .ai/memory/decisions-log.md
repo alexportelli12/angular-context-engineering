@@ -1,47 +1,45 @@
-# Architecture Decision Records (ADR)
+# Architecture Decision Records
 
-This file tracks major architectural decisions made during the project lifecycle. Each decision is documented using the ADR format to provide context, rationale, and trade-offs for future reference.
+Tracks major architectural decisions using ADR format.
 
 ---
 
-## How to Use This File
+## How to Use
 
-When making a significant architectural decision:
+When making significant architectural decision:
 
-1. Add a new ADR entry below using the template
-2. Increment the ADR number sequentially
-3. Include date, status, context, decision, consequences, and alternatives
-4. Link to relevant PRPs, commits, or documentation
+1. Add new ADR entry using template below
+2. Increment ADR number sequentially
+3. Include date, status, context, decision, consequences, alternatives
+4. Link to relevant PRPs, commits, documentation
 
 ---
 
 ## ADR Template
 
 ```markdown
-## ADR-XXX: [Short Decision Title]
+## ADR-XXX: [Title]
 
 **Date:** YYYY-MM-DD
 **Status:** Accepted | Proposed | Deprecated | Superseded
-**Context:** What is the issue we're addressing? What constraints exist?
 
-**Decision:** What change are we making? What pattern are we adopting?
+**Context:** Issue being addressed, constraints
+
+**Decision:** Change being made, pattern adopted
 
 **Consequences:**
-
-- Positive: Benefits and advantages
-- Negative: Trade-offs, limitations, or costs
-- Neutral: Other impacts worth noting
+- Positive: Benefits
+- Negative: Trade-offs, limitations
+- Neutral: Other impacts
 
 **Alternatives Considered:**
-
-1. Option A - Why it was rejected
-2. Option B - Why it was rejected
+1. Option A - Why rejected
+2. Option B - Why rejected
 
 **Related:**
-
-- PRP: `.ai/planning/prp/[feature-name].md`
-- Commit: [commit-hash]
-- Documentation: [link]
+- PRP: `.ai/planning/prp/[feature].md`
+- Commit: [hash]
+- Docs: [link]
 
 ---
 ```
@@ -50,6 +48,6 @@ When making a significant architectural decision:
 
 ## Decision Log
 
-_No decisions recorded yet. The Architect Agent will populate this as architectural decisions are made during implementation._
+_Architect Agent populates this as decisions are made._
 
 ---

@@ -37,6 +37,29 @@ This command will:
 
 **Important:** Run this command ONLY ONCE when setting up a new project from this template.
 
+## Context Alignment
+
+**If you want to use the PRP workflow in an existing Angular project**, or if the context and documentation have drifted from the actual implementation, run:
+
+```bash
+/project.align
+```
+
+This command will:
+- Analyze your existing Angular codebase structure and patterns
+- Discover tech stack, architecture, and coding standards from actual code
+- Generate or update `.ai/context/` files to match reality
+- Update `.ai/memory/project-state.md` with all implemented features
+- Create an alignment report with recommendations for standardization
+- Identify inconsistencies between documentation and implementation
+
+**When to use:**
+- Adopting PRP workflow in an existing Angular project (run once initially)
+- After major refactoring or architectural changes
+- When context documentation feels stale or out of sync
+- Every 3-6 months as maintenance to prevent documentation drift
+- Onboarding Claude Code to a legacy codebase
+
 ## Project Philosophy
 
 This is **not** a standard Angular starter. It's a structured environment that gives Claude Code the context needed to produce consistent, architecture-compliant code. The key innovation is the **PRP (Product Requirement Prompt)** workflow, which separates planning from implementation to reduce hallucinations and enforce coding standards.

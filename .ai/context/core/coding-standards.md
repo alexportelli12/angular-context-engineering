@@ -1,69 +1,70 @@
-# Angular Coding Standards
+# Coding Standards
 
-> Angular v21 | Updated: 2025-12-24
+> Angular v21 | Zoneless | Signal-based
 
-Mandatory coding standards for this project.
+## 1. Modern Angular Syntax (Required)
 
----
+### Signals (State Management)
 
-## 1. Modern Angular Syntax
-
-### 1.1 Signals (State Management)
-
-**MUST** use Signals for synchronous state. Use RxJS ONLY for async operations (HTTP, WebSockets, time-based streams).
+Use signals for synchronous state. RxJS ONLY for async (HTTP, WebSockets, timers).
 
 ```typescript
-// ✅ Signals for state
+// ✅ Signals
 userList = signal<User[]>([]);
-selectedUser = computed(() => this.userList().find((u) => u.id === this.selectedId()));
+selectedUser = computed(() => this.userList().find(u => u.id === this.selectedId()));
 
-// ❌ Never BehaviorSubject for state
+// ❌ NEVER BehaviorSubject for state
 userListSubject = new BehaviorSubject<User[]>([]);
 ```
 
-### 1.2 Inputs/Outputs
+### Inputs/Outputs
 
-**MUST** use `input()`, `output()`, `model()` functions (not decorators).
+Use input(), output(), model() functions. NOT decorators.
 
 ```typescript
 userId = input.required<string>();
 isEditable = input<boolean>(false);
 userDeleted = output<string>();
-selectedValue = model<string>(''); // Two-way binding
+selectedValue = model<string>('');  // Two-way binding
 ```
 
-### 1.3 Template Control Flow
+### Template Control Flow
 
-**MUST** use `@if`, `@for`, `@switch` (not `*ngIf`, `*ngFor`, `ngSwitch`).
+Use @if, @for, @switch. NOT *ngIf, *ngFor.
 
 ```html
 @if (isLoading()) {
-<app-spinner />
+  <app-spinner />
 } @else if (hasError()) {
-<app-error [message]="errorMessage()" />
-} @for (user of userList(); track user.id) {
-<app-user-card [user]="user" />
+  <app-error [message]="errorMessage()" />
+}
+
+@for (user of userList(); track user.id) {
+  <app-user-card [user]="user" />
 } @empty {
-<p>No users found.</p>
-} @switch (role()) { @case ('admin') { <app-admin-panel /> } @default { <app-viewer-panel /> } }
+  <p>No users found.</p>
+}
+
+@switch (role()) {
+  @case ('admin') { <app-admin-panel /> }
+  @default { <app-viewer-panel /> }
+}
 ```
 
-### 1.4 Dependency Injection
+### Dependency Injection
 
-**MUST** use `inject()` function (not constructor injection).
+Use inject() function. NOT constructor injection.
 
 ```typescript
 private readonly userService = inject(UserService);
 private readonly router = inject(Router);
 ```
 
----
+## 2. Code Quality Rules
 
-## 2. Code Quality
+### Naming Conventions
 
-### 2.1 Naming Conventions
-
-**MUST** use descriptive, intention-revealing names. NO abbreviations.
+Descriptive, intention-revealing names. NO abbreviations.
 
 ```typescript
 // ✅ Descriptive
@@ -79,14 +80,13 @@ idx = signal<number>(-1);
 ```
 
 **Patterns:**
+- **Booleans:** is, has, should, can prefix (isVisible, hasPermission)
+- **Collections:** Plural with type (userList, productCollection)
+- **Computed:** Descriptive result (filteredUserList, totalPrice)
 
-- **Booleans:** `is`, `has`, `should`, `can` prefix (e.g., `isVisible`, `hasPermission`)
-- **Collections:** Plural with type (e.g., `userList`, `productCollection`)
-- **Computed:** Descriptive of result (e.g., `filteredUserList`, `totalPrice`)
+### Method Length
 
-### 2.2 Method Length
-
-**MUST** keep methods focused and **≤15-20 lines**. Extract logic into private methods.
+Keep methods ≤15-20 lines. Extract logic into private methods.
 
 ```typescript
 submitForm(): void {
@@ -101,9 +101,9 @@ private validateForm(): boolean {
 }
 ```
 
-### 2.3 Template Logic
+### Template Logic
 
-**MUST** move complex logic to `computed()` signals. Keep templates declarative.
+Move complex logic to computed() signals. Keep templates declarative.
 
 ```typescript
 // ✅ Component
@@ -111,41 +111,25 @@ canEditProfile = computed(() => {
   const role = this.currentUserRole();
   return role === 'admin' || role === 'editor' || this.user().isOwner;
 });
-
-displayName = computed(() => {
-  const u = this.user();
-  return u.firstName && u.lastName ? `${u.firstName} ${u.lastName}` : u.email;
-});
 ```
 
 ```html
 <!-- ✅ Template -->
-<h2>{{ displayName() }}</h2>
 @if (canEditProfile()) { <button>Edit</button> }
 
-<!-- ❌ Never complex logic in templates -->
+<!-- ❌ Complex logic in template -->
 @if (role() === 'admin' || role() === 'editor' || user().isOwner) { ... }
 ```
 
-### 2.4 DRY Principle
+### DRY Principle
 
-**MUST** extract repeated template code to sub-components.
-
-```typescript
-// ✅ Extract to component
-@Component({ selector: 'app-user-card', template: `<div class="card">...</div>` })
-export class UserCardComponent {
-  user = input.required<User>();
-}
-```
-
----
+Extract repeated template code to sub-components.
 
 ## 3. File Organization
 
-### 3.1 Separation of Concerns
+### Separation of Concerns
 
-**MUST** separate interfaces, enums, and constants into dedicated files.
+Separate interfaces, enums, constants into dedicated files.
 
 ```
 models/
@@ -154,91 +138,54 @@ models/
 └── user.constants.ts      # Constants only
 ```
 
-```typescript
-// ❌ Never mix in one file
-export interface User {
-  /* ... */
-}
-export enum UserRole {
-  /* ... */
-}
-export const DEFAULT_PAGE_SIZE = 20;
+### Template and Style Files
 
-// ✅ Separate files
-// user.model.ts
-export interface User {
-  id: string;
-  name: string;
-}
-// user-role.enum.ts
-export enum UserRole {
-  Admin = 'admin',
-  Editor = 'editor',
-}
-// user.constants.ts
-export const DEFAULT_PAGE_SIZE = 20;
-```
-
-### 3.2 Template and Style Files
-
-**MUST** use separate `.html` and `.css` files (no inline templates or styles).
+Separate .html and .css files. NO inline templates/styles.
 
 ```typescript
-// ✅ External template and styles
+// ✅ External files
 @Component({
   selector: 'app-user-list',
   templateUrl: './user-list.html',
   styleUrl: './user-list.css'
 })
 
-// ❌ No inline templates or styles
+// ❌ NO inline
 template: `<div>...</div>`,
 styles: `...`
 ```
 
 **Styling Approach:**
+1. Use Tailwind classes in templates (primary)
+2. Custom CSS in .css files (only when needed)
+3. Use @theme in CSS for Tailwind customization
 
-1. **First**: Use Tailwind CSS classes in templates
-2. **Only if needed**: Add custom CSS in `.css` files
-3. Use `@theme` in CSS files for Tailwind theme customization
+**Exception:** Inline template acceptable ONLY for <3 lines.
 
-**Exception:** Inline template acceptable ONLY for <3 lines or single-element wrappers.
+## 4. Linting
 
----
-
-## 4. Linting and Code Quality
-
-**MUST** address linting failures by fixing the underlying issue. Disabling ESLint rules is NOT acceptable.
+Fix underlying issues. NEVER disable ESLint rules.
 
 ```typescript
-// ❌ NEVER disable ESLint rules
+// ❌ NEVER
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const data: any = ...;
 
-// ✅ Fix the issue properly
+// ✅ Fix properly
 const data: User = ...;
 ```
 
-**When `npm run lint` fails:**
+## 5. Validation Checklist
 
-1. Read the error message carefully
-2. Fix the root cause (type safety, unused variables, etc.)
-3. Re-run lint to verify
-4. Only disable rules in exceptional cases with team approval
-
----
-
-## 5. Commit Checklist
-
-- [ ] State: `signal()` or `computed()` (not BehaviorSubject)
-- [ ] Inputs: `input()` or `input.required()`
-- [ ] Outputs: `output()`, two-way: `model()`
-- [ ] DI: `inject()` (not constructor)
-- [ ] Templates: `@if`, `@for`, `@switch` (not `*ngIf`, `*ngFor`)
+- [ ] State: signal()/computed() (not BehaviorSubject)
+- [ ] Inputs: input()/input.required()
+- [ ] Outputs: output(), two-way: model()
+- [ ] DI: inject() (not constructor)
+- [ ] Templates: @if/@for/@switch (not *ngIf/*ngFor)
 - [ ] Names: Descriptive (no abbreviations)
 - [ ] Methods: ≤20 lines, single responsibility
-- [ ] Templates: No complex logic (use `computed()`)
-- [ ] Files: Separate `.model.ts`, `.enum.ts`, `.constants.ts`, `.html`, `.css`
-- [ ] Styles: Tailwind classes used first, custom CSS only when needed
-- [ ] Filenames: No `.component.` in component files (e.g., `user-list.ts`)
+- [ ] Templates: No complex logic (use computed())
+- [ ] Files: Separate .model.ts, .enum.ts, .constants.ts, .html, .css
+- [ ] Styles: Tailwind first, custom CSS only when needed
+- [ ] Filenames: NO .component. (user-list.ts not user-list.component.ts)
 - [ ] Linting: All issues fixed (not disabled)

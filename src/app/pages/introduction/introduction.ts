@@ -82,12 +82,19 @@ export class IntroductionComponent {
     },
     {
       step: 4,
+      title: 'OR: Align Existing Project',
+      description:
+        'If you want to use PRP workflow in an existing Angular project, run this to analyze your codebase and generate aligned context documentation.',
+      command: '/project.align',
+    },
+    {
+      step: 5,
       title: 'Start Dev Server',
       description: 'Launch the development server to verify setup.',
       command: 'npm start',
     },
     {
-      step: 5,
+      step: 6,
       title: 'Draft Your First Feature',
       description: 'Use the PRP workflow to create your first feature.',
       command: '/prp.draft your feature description here',
