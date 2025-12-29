@@ -1,1 +1,6 @@
 /* All styling handled by Tailwind classes in template */
+
+/* Add smooth scroll behavior globally */
+html {
+  scroll-behavior: smooth;
+}
