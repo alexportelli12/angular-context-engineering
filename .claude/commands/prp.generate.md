@@ -1,146 +1,118 @@
 # Generate PRP: $ARGUMENTS
 
-Generate a complete PRP (Product Requirement Prompt) for a feature, bug fix, or architectural change using `.ai/planning/templates/feature-prp.md` as base.
+Generate complete PRP (Product Requirement Prompt) using `.ai/planning/templates/feature-prp.md`.
 
-## What is a PRP?
+**PRP:** Detailed implementation spec with requirements, structure, step-by-step instructions for AI agents.
 
-**Product Requirement Prompt** - detailed implementation spec with requirements, component structure, and step-by-step instructions for AI agents.
-
-> The AI agent only receives the PRP + codebase access. It does not inherently know your context or reasoning unless explicitly included in the PRP. Use references and examples generously.
-
----
+> Agent receives PRP + codebase only. Include all context explicitly.
 
 ## Research Process
 
-### 0. Load Existing Draft (If Available)
+### 0. Load Draft (If Available)
 
-**Check** if a draft exists at `.ai/planning/drafts/$ARGUMENTS.md`:
+Check `.ai/planning/drafts/$ARGUMENTS.md`:
+- If exists, use as starting point
+- Contains feature description, docs, considerations
+- Validate and expand
 
-- If found, use it as the starting point for the PRP
-- The draft contains the initial feature description, documentation references, and considerations
-- Validate and expand upon the draft content
+### 1. Load Project State
 
-### 1. Load Project State (Baseline Context)
+Read `project-state.md`:
+- Implemented features/components
+- Services/state patterns
+- Active routes/integrations
+- Recent changes
 
-**Next**, read `.ai/memory/project-state.md` to understand:
-
-- Currently implemented features and their components
-- Existing services and state management patterns
-- Active routes and integration points
-- Recent changes and established patterns
-
-This prevents duplication, ensures consistency with existing implementations, and identifies reusable components.
+Prevents duplication, ensures consistency, identifies reusable components.
 
 ### 2. Codebase Analysis
 
-Search for related Angular components, services, models, guards, and routing patterns:
-
-- `src/app/pages/` - feature components
-- `src/app/shared/ui/` - reusable presentational components
-- `src/app/services/` - global services and state management
-- `src/app/models/` - TypeScript interfaces and types
-- `src/app/core/` - guards, interceptors, error handlers
+Search `src/app/`:
+- `pages/` - feature components
+- `shared/ui/` - reusable components
+- `services/` - global services/state
+- `models/` - interfaces/types
+- `core/` - guards/interceptors
 
 Identify patterns:
+- State: `signal()`, `computed()`, `effect()`
+- DI: `inject()`
+- Templates: `@if`, `@for`, `@switch`
+- Components: `input()`, `output()`, `model()`
+- Change detection: OnPush (zoneless)
 
-- Signal-based state management (`signal()`, `computed()`, `effect()`)
-- Modern DI with `inject()` function
-- Template syntax: `@if`, `@for`, `@switch`
-- Component patterns: `input()`, `output()`, `model()`
-- OnPush change detection (zoneless compatible)
-
-Review architecture and standards:
-
-- `.ai/memory/project-state.md` - current project state and implemented features
-- `.ai/context/core/architecture.md` - directory structure and layer responsibilities
-- `.ai/context/core/coding-standards.md` - Angular 21 patterns and anti-patterns
-- `.ai/context/core/tech-stack.md` - framework versions and tooling
+Review context:
+- `project-state.md` - current state
+- `architecture.md` - structure/responsibilities
+- `coding-standards.md` - Angular 21 patterns
+- `tech-stack.md` - versions/tooling
 
 ### 3. External Research
 
-Reference documentation:
-
+Reference:
 - Angular docs: https://angular.dev/
-- TypeScript patterns for strict mode
-- Tailwind 4 `@theme` syntax (NOT tailwind.config.js)
-- Vitest testing patterns
+- TypeScript strict mode
+- Tailwind 4 `@theme` (not tailwind.config.js)
+- Vitest patterns
 
-### 4. User Clarification (if needed)
+### 4. Clarify (if needed)
 
 Ask:
-
-- Is this MVP or post-MVP enhancement?
-- Are there specific UX/UI requirements?
-- Should this affect existing features or remain isolated?
-- Any performance or accessibility constraints?
-
----
+- MVP or post-MVP?
+- UX/UI requirements?
+- Affect existing or isolated?
+- Performance/accessibility constraints?
 
 ## PRP Generation
 
-Use `.ai/planning/templates/feature-prp.md` as the base template. Your PRP **must** include:
+Use `.ai/planning/templates/feature-prp.md` as base. Include:
 
-### Critical Context for AI Agent
+### Critical Context
 
-Required:
-
-- **Project state from `.ai/memory/project-state.md`** - existing features and patterns
-- Code snippets from similar components in `src/app/`
-- Reference to architecture patterns in `.ai/context/core/architecture.md`
-- Angular 21 conventions from `.ai/context/core/coding-standards.md`
-- File references for components, services, models, and routing
-- Integration points: routing, state management, styling
+- `project-state.md` - existing features/patterns
+- Code snippets from similar `src/app/` components
+- `architecture.md` - patterns
+- `coding-standards.md` - Angular 21 conventions
+- File references: components, services, models, routing
+- Integration: routing, state, styling
 
 ### Implementation Blueprint
 
-Include:
+- Pseudocode for logic/edge cases
+- Components/services to mirror
+- Error handling
+- Subtasks: models → services → components → routing → tests
 
-- Pseudocode for logic and edge cases
-- Referenced components/services to mirror
-- Error handling expectations
-- Subtasks in ideal execution order: models → services → components → routing → tests
-
-### Validation Gates (Must Be Executable)
+### Validation Gates
 
 ```bash
-npm run start       # Dev server check
-npm run build       # Production build must succeed
-npm run lint        # ESLint validation
+npm run start       # Dev server
+npm run build       # Production (must succeed)
+npm run lint        # ESLint (must pass)
 ```
-
----
 
 ## Before Writing: ULTRATHINK
 
-After exploring codebase and research, **PAUSE** and:
-
-> Mentally execute the implementation - imagine every signal, inject() call, template binding, and edge case before writing code. Validate against `.ai/context/core/` standards.
-
----
+After research, PAUSE:
+> Mentally execute implementation - every signal, inject(), template binding, edge case. Validate against context standards.
 
 ## Output
 
-Save to: `.ai/planning/prp/{feature-name}.md`
-
-Use `kebab-case` for filenames.
-
----
+Save to `.ai/planning/prp/{feature-name}.md` (kebab-case)
 
 ## Quality Checklist
 
-- [ ] Project state from `.ai/memory/project-state.md` reviewed and referenced
-- [ ] All necessary context included (code references, architecture docs)
-- [ ] AI can execute and validate based on PRP instructions
-- [ ] Real code examples from codebase provided
-- [ ] Implementation steps clearly ordered
-- [ ] Error handling and edge cases accounted for
-- [ ] Links to Angular docs and `.ai/context/` files included
+- [ ] `project-state.md` reviewed/referenced
+- [ ] Context included (code refs, architecture docs)
+- [ ] AI can execute/validate from PRP
+- [ ] Real code examples provided
+- [ ] Steps clearly ordered
+- [ ] Error handling/edge cases
+- [ ] Angular docs + context file links
 - [ ] Validation commands executable
-- [ ] Follows Angular 21 patterns (signals, inject, @if/@for, OnPush)
-- [ ] No conflicts with existing features documented in project state
-
----
+- [ ] Angular 21 patterns (signals, inject, @if/@for, OnPush)
+- [ ] No conflicts with existing features
 
 ## Confidence Rating
 
-After writing the PRP, rate 1-10 based on confidence that an AI agent could **successfully complete the task in one pass** without additional clarification.
+Rate 1-10: AI agent can complete in one pass without clarification?
