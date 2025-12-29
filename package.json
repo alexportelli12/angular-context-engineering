@@ -1,6 +1,5 @@
 {
-  "name": "stv",
-  "description": "A one page web application that helps users run simulations of the single transferable vote in Maltese elections",
+  "name": "angular-context-engineering",
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
@@ -8,7 +7,7 @@
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
-    "serve:ssr:stv": "node dist/stv/server/server.mjs",
+    "serve:ssr:angular-context-engineering": "node dist/angular-context-engineering/server/server.mjs",
     "lint": "ng lint",
     "lint:fix": "ng lint --fix"
   },
