@@ -17,10 +17,14 @@ This is not a standard Angular starter kit. It is a structured environment that 
 
 ## How the Workflow Works
 
-The development flow has three phases: **Draft**, **Generate**, and **Execute**.
+The development flow has two paths: **Full PRP Workflow** (for complex features) and **Quick Task** (for simple changes).
+
+### Full PRP Workflow
+
+For complex features requiring planning and architectural decisions:
 
 ```
-[Your Feature Idea]
+[Complex Feature Idea]
         |
         v
   /prp.draft     -->  Creates initial draft from prompt
@@ -36,6 +40,20 @@ The development flow has three phases: **Draft**, **Generate**, and **Execute**.
         |
         v
   [Complete Feature]
+```
+
+### Quick Task Workflow
+
+For simple, well-understood tasks:
+
+```
+[Simple Task]
+        |
+        v
+  /quick.task    -->  Implements directly with validation
+        |
+        v
+  [Complete Task]
 ```
 
 ### Step 1: Draft the Feature (Optional but Recommended)
@@ -96,7 +114,7 @@ The agent will:
 
 ## Slash Commands
 
-Five custom slash commands are defined in `.claude/commands/`:
+Six custom slash commands are defined in `.claude/commands/`:
 
 ### /project.init
 
@@ -177,9 +195,42 @@ Five custom slash commands are defined in `.claude/commands/`:
 
 **Input:** The feature name that matches a PRP file
 
+### /quick.task
+
+**Purpose:** Implement small features or fixes without the full PRP workflow.
+
+**What it does:**
+
+- Loads project state and architectural context
+- Plans and implements simple tasks efficiently
+- Follows all Angular 21 conventions and coding standards
+- Runs validation (build, lint)
+- Updates project state if needed (new routes, services, or features)
+
+**Use cases:**
+- Simple bug fixes
+- New shared UI components
+- Small enhancements to existing features
+- Single or few-file changes
+- Well-understood requirements
+
+**When NOT to use:**
+- Tasks requiring architectural decisions
+- Features affecting multiple parts of the application
+- Complex state management or integrations
+- Unclear requirements needing exploration
+
+**Usage:** `/quick.task add loading spinner component to shared/ui`
+
+**Output:** Direct implementation with validation, bypassing PRP generation
+
 ---
 
-## The Architect Agent
+## AI Agents
+
+This repository includes specialized AI agents that assist with specific tasks.
+
+### The Architect Agent
 
 The Architect Agent (`.claude/agents/architect.md`) is a specialized reviewer that validates implementations against architectural rules. It is invoked automatically at the end of `/prp.execute`.
 
@@ -198,6 +249,36 @@ The Architect Agent (`.claude/agents/architect.md`) is a specialized reviewer th
 - **FAIL:** Specific violations listed with file paths and fix instructions
 
 The agent does not write code. It reviews and enforces standards.
+
+### The Documentation Agent
+
+The Documentation Agent (`.claude/agents/documentation.md`) writes dense, token-efficient markdown documentation optimized for AI agent consumption.
+
+**What it does:**
+
+- Creates or updates all markdown documentation files
+- Maximizes information density per token (50-70% reduction from verbose drafts)
+- Ensures consistency across repository documentation
+- Uses structured format: front-loaded critical info, bullet points, minimal whitespace
+- Focuses on technical precision without verbosity
+
+**When invoked:**
+
+- Creating or updating files in `.ai/` directory
+- Writing architectural documentation
+- Updating project state or decision logs
+- Creating feature PRPs or drafts
+- Any markdown file that will be consumed by AI agents
+
+**Key principles:**
+
+- Active voice, imperative mood
+- Zero filler or meta-commentary
+- Hierarchical organization (most important first)
+- Code examples only when demonstrating non-obvious patterns
+- Consistent terminology throughout repository
+
+**Note:** This agent is automatically used by the PRP workflow commands for documentation updates.
 
 ---
 
@@ -270,12 +351,15 @@ Edit `.claude/agents/architect.md` to modify what the review checks for.
 │   └── planning/                # PRP templates and generated PRPs
 ├── .claude/
 │   ├── agents/
-│   │   └── architect.md         # Architect agent persona
+│   │   ├── architect.md         # Architect agent (reviews implementations)
+│   │   └── documentation.md     # Documentation agent (writes markdown)
 │   └── commands/
 │       ├── project.init.md      # Initialize new project (run once)
+│       ├── project.align.md     # Align context to existing codebase
 │       ├── prp.draft.md         # Draft PRP from prompt
 │       ├── prp.generate.md      # Generate PRP command
-│       └── prp.execute.md       # Execute PRP command
+│       ├── prp.execute.md       # Execute PRP command
+│       └── quick.task.md        # Quick task implementation
 ├── src/app/
 │   ├── core/                    # Guards, interceptors, error handlers
 │   ├── models/                  # TypeScript interfaces and types
@@ -296,11 +380,17 @@ Edit `.claude/agents/architect.md` to modify what the review checks for.
    - This removes placeholder content and configures your project name
    - Optionally sets up additional technologies (Firebase, NgRx Signal Store, Storybook)
 5. Open in Claude Code (if not already open)
-6. Describe your first feature: `/prp.draft your feature description here`
-7. Review and refine the draft in `.ai/planning/drafts/`
-8. Generate the full PRP: `/prp.generate {feature-name}`
-9. Review the generated PRP in `.ai/planning/prp/`
-10. Implement the feature: `/prp.execute {feature-name}`
+6. Choose your workflow based on task complexity:
+
+**For complex features (Full PRP Workflow):**
+- Draft your feature: `/prp.draft your feature description here`
+- Review and refine the draft in `.ai/planning/drafts/`
+- Generate the full PRP: `/prp.generate {feature-name}`
+- Review the generated PRP in `.ai/planning/prp/`
+- Implement the feature: `/prp.execute {feature-name}`
+
+**For simple tasks (Quick Task Workflow):**
+- Implement directly: `/quick.task add loading spinner to shared/ui`
 
 ---
 
