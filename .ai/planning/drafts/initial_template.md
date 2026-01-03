@@ -1,77 +1,32 @@
-# PRP Draft Template
+# PRP Draft: {Feature Name}
 
-Use this template with `/prp.draft` to capture initial feature requirements before full PRP generation.
+## Feature
 
----
+{What the feature does, expected behavior, key interactions}
 
-## FEATURE:
+## Scope
 
-[Describe the feature clearly and concisely. Include:]
+- [ ] MVP / Full implementation
+- [ ] New feature / Extending existing
+- [ ] User-facing / Infrastructure
 
-- What the feature does
-- Expected behavior and user interactions
-- Key components or pages involved
+## Integration Points
 
-Example: "Create a user profile page with editable form fields for name, email, and avatar. Should include validation and save functionality."
+- **Existing services:** {services to reuse}
+- **Existing components:** {components to extend or reference}
+- **New routes:** {if any}
 
-## DOCUMENTATION:
+## Considerations
 
-[List documentation resources needed during implementation:]
+- **Directory:** `pages/` or `shared/ui/`?
+- **State:** Local signals or global service?
+- **Edge cases:** Loading, error, empty states
 
-**Angular Resources:**
+## Documentation
 
-- [Relevant Angular docs page]: https://angular.dev/...
-
-**Internal Context:**
-
-- `.ai/context/core/architecture.md` - [why needed]
-- `.ai/context/core/coding-standards.md` - [why needed]
-- `.ai/context/core/tech-stack.md` - [why needed]
-
-**External Resources:**
-
-- [Any third-party docs, APIs, or design specs]
-
-## OTHER CONSIDERATIONS:
-
-[Capture gotchas, constraints, and requirements that AI agents commonly miss:]
-
-**Angular 21 Requirements:**
-
-- [ ] Use `signal()` for state (not BehaviorSubject)
-- [ ] Use `inject()` for DI (not constructor)
-- [ ] Use `@if`/`@for` templates (not `*ngIf`/`*ngFor`)
-- [ ] Use `input()`/`output()` (not @Input/@Output decorators)
-- [ ] OnPush change detection
-- [ ] Component filenames without `.component.` (e.g., user-list.ts)
-- [ ] Use Tailwind classes for styling (custom CSS only when needed)
-- [ ] Style files as `.css` (not `.scss`)
-- [ ] Fix lint errors properly (NEVER disable ESLint rules)
-
-**Architecture Constraints:**
-
-- [Directory placement: pages/ vs shared/ui/]
-- [Service dependencies to reuse]
-- [State management approach]
-
-**Edge Cases:**
-
-- [Loading states]
-- [Error handling]
-- [Empty states]
-
-**Testing Notes:**
-
-- Tests are NOT required unless explicitly requested
-- [If tests are needed: key scenarios to test]
-- [If tests are needed: mock requirements]
+- Angular docs: {relevant links}
+- Internal: `architecture.md`, `coding-standards.md`
 
 ---
 
-## Next Step
-
-Once this draft is complete, run:
-
-```
-/prp.generate {feature-name}
-```
+**Next:** `/prp.generate {feature-name}`
