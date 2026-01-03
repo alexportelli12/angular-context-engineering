@@ -9,7 +9,8 @@
     "test": "ng test",
     "serve:ssr:angular-context-engineering": "node dist/angular-context-engineering/server/server.mjs",
     "lint": "ng lint",
-    "lint:fix": "ng lint --fix"
+    "lint:fix": "ng lint --fix",
+    "sync:prompts": "./sync-prompts.sh"
   },
   "prettier": {
     "printWidth": 100,
