@@ -17,6 +17,8 @@ Initialize new Angular project from this template: remove placeholders, configur
 
 This command updates these files (use documentation agent for all writes):
 
+**IMPORTANT:** Edit command/agent files in `.github/` (source), NOT `.claude/` (symlinks).
+
 ```
 .ai/memory/project-state.md    # Update with project name, initial state
 CLAUDE.md                      # Update project name reference

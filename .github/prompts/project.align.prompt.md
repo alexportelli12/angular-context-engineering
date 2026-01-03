@@ -13,6 +13,8 @@ Analyze ANY codebase, rewrite ALL context files to match actual implementation.
 
 This command MUST update/rewrite ALL of these files:
 
+**IMPORTANT:** Edit command/agent files in `.github/` (source), NOT `.claude/` (symlinks).
+
 ```
 .ai/
 ├── context/core/
@@ -27,15 +29,13 @@ This command MUST update/rewrite ALL of these files:
 │   ├── drafts/initial_template.md   # Draft template
 │   └── templates/feature-prp.md     # PRP template
 
-.claude/
-├── agents/
-│   ├── architect.md           # Review rules for THIS stack
-│   └── documentation.md       # Keep as-is (universal)
-├── commands/
-│   ├── prp.draft.md           # Keep as-is (universal)
-│   ├── prp.generate.md        # Keep as-is (universal)
-│   ├── prp.execute.md         # Adapt validation commands
-│   └── quick.task.md          # Adapt validation commands
+.github/prompts/               # SOURCE files (edit these, not .claude/)
+├── prp.execute.prompt.md      # Adapt validation commands
+└── quick.task.prompt.md       # Adapt validation commands
+
+.github/agents/                # SOURCE files (edit these, not .claude/)
+├── architect.agent.md         # Review rules for THIS stack
+└── documentation.agent.md     # Keep as-is (universal)
 
 CLAUDE.md                      # Root context for THIS project
 ```
@@ -167,7 +167,7 @@ Adapt:
 
 - Considerations for THIS stack
 
-### 2.9 `.claude/agents/architect.md`
+### 2.9 `.github/agents/architect.agent.md`
 
 Rewrite blocking violations for THIS stack:
 
@@ -175,13 +175,13 @@ Rewrite blocking violations for THIS stack:
 - Architecture rules discovered
 - Review criteria appropriate to stack
 
-### 2.10 `.claude/commands/prp.execute.md`
+### 2.10 `.github/prompts/prp.execute.prompt.md`
 
 Adapt:
 
 - Validation commands for THIS stack
 
-### 2.11 `.claude/commands/quick.task.md`
+### 2.11 `.github/prompts/quick.task.prompt.md`
 
 Adapt:
 
