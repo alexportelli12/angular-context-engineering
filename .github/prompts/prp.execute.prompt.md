@@ -1,3 +1,8 @@
+---
+agent: agent
+description: Implement feature from existing PRP
+---
+
 # Execute PRP: $ARGUMENTS
 
 Implement feature from `.ai/planning/prp/{feature-name}.md`.

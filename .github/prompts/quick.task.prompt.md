@@ -1,3 +1,8 @@
+---
+agent: agent
+description: Quick implementation without full PRP workflow
+---
+
 # Quick Task: $ARGUMENTS
 
 Small feature/fix without full PRP workflow.

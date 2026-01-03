@@ -1,3 +1,8 @@
+---
+agent: agent
+description: Create initial feature draft from prompt
+---
+
 # Draft PRP: $ARGUMENTS
 
 Create initial feature draft using `.ai/planning/drafts/initial_template.md`.

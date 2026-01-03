@@ -1,3 +1,8 @@
+---
+agent: agent
+description: Align context files to match any frontend codebase
+---
+
 # Align Project: $ARGUMENTS
 
 Analyze ANY codebase, rewrite ALL context files to match actual implementation.

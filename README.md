@@ -11,7 +11,54 @@ This is not a standard Angular starter kit. It is a structured environment that 
 - **Framework:** Angular 21 (Signals, Standalone Components, Control Flow Syntax)
 - **Styling:** Tailwind CSS 4
 - **Testing:** Vitest
-- **AI Tooling:** Claude Code with custom slash commands
+- **AI Tooling:** Claude Code & GitHub Copilot (shared commands via symlinks)
+
+---
+
+## Multi-Tool Support (Claude Code & GitHub Copilot)
+
+This repository supports both **Claude Code** and **GitHub Copilot** using a single set of command/prompt files.
+
+### How It Works
+
+Commands and agents are defined once in `.github/` and symlinked to `.claude/`:
+
+```
+.github/prompts/*.prompt.md  →  .claude/commands/*.md
+.github/agents/*.agent.md    →  .claude/agents/*.md
+```
+
+### Syncing Commands
+
+After cloning or adding new prompts, run:
+
+```bash
+npm run sync:prompts
+```
+
+This creates symlinks so both tools use the same source files.
+
+### File Naming Conventions
+
+| Location            | Naming                | Used By        |
+| ------------------- | --------------------- | -------------- |
+| `.github/prompts/`  | `{name}.prompt.md`    | GitHub Copilot |
+| `.github/agents/`   | `{name}.agent.md`     | GitHub Copilot |
+| `.claude/commands/` | `{name}.md` (symlink) | Claude Code    |
+| `.claude/agents/`   | `{name}.md` (symlink) | Claude Code    |
+
+### YAML Frontmatter
+
+All prompt/command files include YAML frontmatter for GitHub Copilot compatibility:
+
+```yaml
+---
+mode: agent
+description: Brief description of what the command does
+---
+```
+
+Claude Code ignores this frontmatter, so the same file works for both tools.
 
 ---
 
@@ -147,6 +194,7 @@ Six custom slash commands are defined in `.claude/commands/`:
 - Identifies pattern inconsistencies and documentation drift
 
 **Use Cases:**
+
 - Adopting PRP workflow in an existing Angular project
 - Context drift after multiple changes or refactoring
 - Onboarding Claude Code to a legacy codebase
@@ -208,6 +256,7 @@ Six custom slash commands are defined in `.claude/commands/`:
 - Updates project state if needed (new routes, services, or features)
 
 **Use cases:**
+
 - Simple bug fixes
 - New shared UI components
 - Small enhancements to existing features
@@ -215,6 +264,7 @@ Six custom slash commands are defined in `.claude/commands/`:
 - Well-understood requirements
 
 **When NOT to use:**
+
 - Tasks requiring architectural decisions
 - Features affecting multiple parts of the application
 - Complex state management or integrations
@@ -349,17 +399,28 @@ Edit `.claude/agents/architect.md` to modify what the review checks for.
 │   ├── context/core/            # Architecture and coding standards
 │   ├── memory/                  # Project state and decisions
 │   └── planning/                # PRP templates and generated PRPs
+├── .github/
+│   ├── prompts/                 # Source files for slash commands (Copilot format)
+│   │   ├── project.init.prompt.md
+│   │   ├── project.align.prompt.md
+│   │   ├── prp.draft.prompt.md
+│   │   ├── prp.generate.prompt.md
+│   │   ├── prp.execute.prompt.md
+│   │   └── quick.task.prompt.md
+│   └── agents/                  # Source files for agents (Copilot format)
+│       ├── architect.agent.md
+│       └── documentation.agent.md
 ├── .claude/
-│   ├── agents/
-│   │   ├── architect.md         # Architect agent (reviews implementations)
-│   │   └── documentation.md     # Documentation agent (writes markdown)
-│   └── commands/
-│       ├── project.init.md      # Initialize new project (run once)
-│       ├── project.align.md     # Align context to existing codebase
-│       ├── prp.draft.md         # Draft PRP from prompt
-│       ├── prp.generate.md      # Generate PRP command
-│       ├── prp.execute.md       # Execute PRP command
-│       └── quick.task.md        # Quick task implementation
+│   ├── agents/                  # Symlinks to .github/agents/
+│   │   ├── architect.md         → .github/agents/architect.agent.md
+│   │   └── documentation.md     → .github/agents/documentation.agent.md
+│   └── commands/                # Symlinks to .github/prompts/
+│       ├── project.init.md      → .github/prompts/project.init.prompt.md
+│       ├── project.align.md     → .github/prompts/project.align.prompt.md
+│       ├── prp.draft.md         → .github/prompts/prp.draft.prompt.md
+│       ├── prp.generate.md      → .github/prompts/prp.generate.prompt.md
+│       ├── prp.execute.md       → .github/prompts/prp.execute.prompt.md
+│       └── quick.task.md        → .github/prompts/quick.task.prompt.md
 ├── src/app/
 │   ├── core/                    # Guards, interceptors, error handlers
 │   ├── models/                  # TypeScript interfaces and types
@@ -376,13 +437,16 @@ Edit `.claude/agents/architect.md` to modify what the review checks for.
 1. Fork this repository
 2. Clone it to your local machine
 3. Install dependencies: `npm install`
-4. **Initialize your project (first time only):** `/project.init`
+4. **Sync commands (required):** `npm run sync:prompts`
+   - Creates symlinks from `.github/` to `.claude/` for both tools to work
+5. **Initialize your project (first time only):** `/project.init`
    - This removes placeholder content and configures your project name
    - Optionally sets up additional technologies (Firebase, NgRx Signal Store, Storybook)
-5. Open in Claude Code (if not already open)
-6. Choose your workflow based on task complexity:
+6. Open in Claude Code or VS Code with GitHub Copilot
+7. Choose your workflow based on task complexity:
 
 **For complex features (Full PRP Workflow):**
+
 - Draft your feature: `/prp.draft your feature description here`
 - Review and refine the draft in `.ai/planning/drafts/`
 - Generate the full PRP: `/prp.generate {feature-name}`
@@ -390,6 +454,7 @@ Edit `.claude/agents/architect.md` to modify what the review checks for.
 - Implement the feature: `/prp.execute {feature-name}`
 
 **For simple tasks (Quick Task Workflow):**
+
 - Implement directly: `/quick.task add loading spinner to shared/ui`
 
 ---

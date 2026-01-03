@@ -1,3 +1,8 @@
+---
+agent: agent
+description: Initialize new Angular project from template
+---
+
 # Initialize Project: $ARGUMENTS
 
 Initialize new Angular project from this template: remove placeholders, configure name, setup technologies.

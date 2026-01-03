@@ -1,3 +1,8 @@
+---
+agent: agent
+description: Generate detailed implementation plan (PRP)
+---
+
 # Generate PRP: $ARGUMENTS
 
 Create implementation plan using `.ai/planning/templates/feature-prp.md`.
